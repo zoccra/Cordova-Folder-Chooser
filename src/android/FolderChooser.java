@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
 import android.R;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,12 +24,15 @@ public class FolderChooser extends CordovaPlugin {
     private String m_dir = "";
     private List<String> m_subdirs = null;
     private ArrayAdapter<String> m_listAdapter = null;
-
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    private CallbackContext c = null;
+    public boolean execute(String action, JSONArray args,final CallbackContext callbackContext) throws JSONException {
         if ("open".equals(action)){
+            this.c = callbackContext;
             final String path = args.getString(0);
             this.open(path);
-            callbackContext.success(this.chosenDir);
+            PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+            result.setKeepCallback(true);
+            this.c.sendPluginResult(result);
             return true;
         }else{
             callbackContext.error("not found :"+action);
@@ -46,11 +50,16 @@ public class FolderChooser extends CordovaPlugin {
                     @Override
                     public void onChosenDir(String chosenDir) 
                     {
-
+                        PluginResult result = new PluginResult(PluginResult.Status.OK, chosenDir);
                         FolderChooser.this.setM_chosenDir(chosenDir);
                         Toast.makeText(
                         FolderChooser.this.cordova.getActivity().getApplicationContext(), "Chosen directory: " + 
                           chosenDir, Toast.LENGTH_LONG).show();
+                        result.setKeepCallback(false);
+                        if (FolderChooser.this.getC() != null) {
+                            FolderChooser.this.getC().sendPluginResult(result);
+                            FolderChooser.this.setC(null);
+                        }
                     }
                 }); 
                 // Toggle new folder button enabling
@@ -72,7 +81,12 @@ public class FolderChooser extends CordovaPlugin {
     public String getChosenDir(){
         return this.chosenDir;
     }
-
+    public CallbackContext getC(){
+        return this.c;
+    }
+    public void setC(CallbackContext c){
+        this.c = c;
+    }
 
 
 
