@@ -1,4 +1,4 @@
-# Cordova-Folder-Chooser
+Cordova-Folder-Chooser
 
 Cordova FolderChooser Plugin
 
@@ -9,4 +9,5 @@ cordova plugin add https://github.com/anthony93700/Cordova-Folder-Chooser.git
 
 API
 
-fileChooser.open('path')
+fileChooser.open('path',onSucess,OnFail);
+onSucess get a String in parameter which is the folder select
