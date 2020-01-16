@@ -21,7 +21,7 @@
 	<source-file src="src/android/DirectoryChooserDialog.java" target-dir="src/com/example/cordova/folderChooser"/> 
   <source-file src="src/android/FolderChooser.java" target-dir="src/com/example/cordova/folderChooser"/>
 <config-file target="AndroidManifest.xml" parent="/manifest">
-	<use-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 </config-file>
 </platform>
