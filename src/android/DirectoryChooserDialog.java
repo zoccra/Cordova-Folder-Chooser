@@ -28,6 +28,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.Intent;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+
 public class DirectoryChooserDialog 
 {
     private boolean m_isNewFolderEnabled = true;
@@ -50,6 +55,7 @@ public class DirectoryChooserDialog
 
     public DirectoryChooserDialog(Context context, ChosenDirectoryListener chosenDirectoryListener)
     {
+        String accept = "*/*";
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         if (!accept.equals("*/*")) {
@@ -60,12 +66,12 @@ public class DirectoryChooserDialog
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
 
         Intent chooser = Intent.createChooser(intent, "Select Folder");
-        cordova.startActivityForResult(this, chooser, Chooser.PICK_FOLDER_REQUEST);
+        cordova.startActivityForResult(this, chooser, DirectoryChooserDialog.PICK_FOLDER_REQUEST);
 
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-        pluginResult.setKeepCallback(true);
-        this.callback = callbackContext;
-        callbackContext.sendPluginResult(pluginResult);
+//        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+//        pluginResult.setKeepCallback(true);
+//        this.callback = callbackContext;
+//        callbackContext.sendPluginResult(pluginResult);
 
 
         m_context = context;
