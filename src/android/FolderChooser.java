@@ -90,11 +90,7 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
 
     public void chooseFile (CallbackContext callbackContext, String accept) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
-                + "/yourFolder/");
-        intent.setDataAndType(uri, "*/*");
-        startActivity(Intent.createChooser(intent, "Open folder"));
+
 
 
 
