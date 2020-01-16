@@ -164,7 +164,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("name", name);
                         result.put("uri", uri);
 
-                        this.callback.success(uri);
+                        this.callback.success(result);
                     }
                     else {
                         this.callback.error("File URI was null.");
