@@ -95,13 +95,13 @@ public class FolderChooser extends CordovaPlugin {
 
 
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.setType("*/*");
+//        intent.setType("*/*");
 //        if (!accept.equals("*/*")) {
 //            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
 //        }
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+//        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
 
         Intent chooser = Intent.createChooser(intent, "Open folder");
         cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
