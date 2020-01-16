@@ -140,31 +140,31 @@ public class FolderChooser extends CordovaPlugin {
                     Uri uri = data.getData();
 
                     if (uri != null) {
-                        ContentResolver contentResolver =
-                                this.cordova.getActivity().getContentResolver()
-                                ;
+//                        ContentResolver contentResolver =
+//                                this.cordova.getActivity().getContentResolver()
+//                                ;
+//
+//                        String name = FolderChooser.getDisplayName(contentResolver, uri);
+//
+//                        String mediaType = contentResolver.getType(uri);
+//                        if (mediaType == null || mediaType.isEmpty()) {
+//                            mediaType = "application/octet-stream";
+//                        }
+//
+//                        byte[] bytes = FolderChooser.getBytesFromInputStream(
+//                                contentResolver.openInputStream(uri)
+//                        );
+//
+//                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
+//
+//                        JSONObject result = new JSONObject();
+//
+//                        result.put("data", base64);
+//                        result.put("mediaType", mediaType);
+//                        result.put("name", name);
+//                        result.put("uri", uri.toString());
 
-                        String name = FolderChooser.getDisplayName(contentResolver, uri);
-
-                        String mediaType = contentResolver.getType(uri);
-                        if (mediaType == null || mediaType.isEmpty()) {
-                            mediaType = "application/octet-stream";
-                        }
-
-                        byte[] bytes = FolderChooser.getBytesFromInputStream(
-                                contentResolver.openInputStream(uri)
-                        );
-
-                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-                        JSONObject result = new JSONObject();
-
-                        result.put("data", base64);
-                        result.put("mediaType", mediaType);
-                        result.put("name", name);
-                        result.put("uri", uri.toString());
-
-                        this.callback.success(result.toString());
+                        this.callback.success(uri);
                     }
                     else {
                         this.callback.error("File URI was null.");
