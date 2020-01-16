@@ -157,12 +157,12 @@ public class FolderChooser extends CordovaPlugin {
 //
 //                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
 //
-//                        JSONObject result = new JSONObject();
-//
+                        JSONObject result = new JSONObject();
+
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-//                        result.put("uri", uri.toString());
+                        result.put("uri", uri);
 
                         this.callback.success(uri);
                     }
