@@ -1,0 +1,19 @@
+{
+  "name": "cordova-folder-chooser",
+  "version": "1.0.0",
+  "description": "Cordova-Folder-Chooser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yokodima/Cordova-Folder-Chooser.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yokodima/Cordova-Folder-Chooser/issues"
+  },
+  "homepage": "https://github.com/yokodima/Cordova-Folder-Chooser#readme"
+}
