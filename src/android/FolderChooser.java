@@ -91,15 +91,23 @@ public class FolderChooser extends CordovaPlugin {
 
     public void chooseFile (CallbackContext callbackContext, String accept) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+                + "/yourFolder/");
+        intent.setDataAndType(uri, "*/*");
+        startActivity(Intent.createChooser(intent, "Open folder"));
+
+
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent.setType("*/*");
-        if (!accept.equals("*/*")) {
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
-        }
+//        if (!accept.equals("*/*")) {
+//            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
+//        }
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
 
-        Intent chooser = Intent.createChooser(intent, "Select File");
+        Intent chooser = Intent.createChooser(intent, "Open folder");
         cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
 
         PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
