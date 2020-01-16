@@ -1,5 +1,5 @@
-module.exports = {
-	open:function (path,onSuccess,onFail){
-		cordova.exec(onSuccess,onFail,"FolderChooser","open",[path]);
-	}
-}
+var exec = require('cordova/exec');
+
+exports.open = function (path,onSuccess,onFail) {
+    exec(onSuccess,onFail,"FolderChooser","open",[path]);
+};
