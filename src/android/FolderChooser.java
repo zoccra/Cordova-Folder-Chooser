@@ -25,10 +25,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.Context;
-import android.annotation.SuppressLint;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 class RealPathUtil {
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -345,7 +355,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", getRealPath(this, uri));
+                        result.put("uri", RealPathUtil.getRealPathFromURI(this, uri));
 
                         this.callback.success(result);
                     }
