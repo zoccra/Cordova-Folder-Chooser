@@ -1,18 +1,4 @@
 package com.example.cordova.folderChooser;
- 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.PluginResult;
-import android.R;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.app.AlertDialog;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.util.List;
-import android.widget.ArrayAdapter;
 
 import android.content.Intent;
 import org.apache.cordova.CallbackContext;
@@ -39,17 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class FolderChooser extends CordovaPlugin {
-    private boolean m_isNewFolderEnabled = true;
-    private String m_sdcardDirectory = "";
-    private Context m_context;
-    private TextView m_titleView;
-    private String m_chosenDir = "";
-    private String chosenDir = "";
-    private String m_dir = "";
-    private List<String> m_subdirs = null;
-    private ArrayAdapter<String> m_listAdapter = null;
+import android.provider.DocumentsContract;
 
+public class FolderChooser extends CordovaPlugin {
     private String currentFolderId = "0";
 
     private static final String ACTION_OPEN = "open";
@@ -89,11 +67,7 @@ public class FolderChooser extends CordovaPlugin {
 
     private CallbackContext callback;
 
-    public void chooseFile (CallbackContext callbackContext, String accept) {
-
-
-
-
+    private void chooseFile (CallbackContext callbackContext, String accept) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("*/*");
 //        if (!accept.equals("*/*")) {
@@ -138,6 +112,9 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
+                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+                            DocumentsContract.getTreeDocumentId(uri));
+                    String path = getPath(this, docUri);
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
@@ -162,12 +139,12 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", uri);
+                        result.put("uri", path);
 
                         this.callback.success(result);
                     }
                     else {
-                        this.callback.error("File URI was null.");
+                        this.callback.error("Folder URI was null.");
                     }
                 }
                 else if (resultCode == Activity.RESULT_CANCELED) {
@@ -179,7 +156,7 @@ public class FolderChooser extends CordovaPlugin {
             }
         }
         catch (Exception err) {
-            this.callback.error("Failed to read file: " + err.toString());
+            this.callback.error("Failed to read folder: " + err.toString());
         }
     }
 }
