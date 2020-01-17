@@ -355,7 +355,8 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", RealPathUtil.getRealPathFromURI(this.cordova.getContext().getApplicationContext(), uri));
+                        String uri2 = RealPathUtil.getRealPathFromURI(this.cordova.getContext().getApplicationContext(), uri);
+                        result.put("uri", uri2);
 
                         this.callback.success(result);
                     }
