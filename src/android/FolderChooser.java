@@ -115,15 +115,13 @@ public class FolderChooser extends CordovaPlugin {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
 
-                    Context context = this.cordova.getActivity().getApplicationContext();
-
-                    for (File f : context.getExternalFilesDirs("")) {
-                        if (Environment.isExternalStorageRemovable(f)) {
-//                            uri = f.getAbsolutePath();
-                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
-                        }
-                    }
-
+//                    Context context = this.cordova.getActivity().getApplicationContext();
+//
+//                    for (File f : context.getExternalFilesDirs("")) {
+//                        if (Environment.isExternalStorageRemovable(f)) {
+//                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
+//                        }
+//                    }
 
 
 
@@ -133,20 +131,20 @@ public class FolderChooser extends CordovaPlugin {
 
                         String name = FolderChooser.getDisplayName(contentResolver, uri);
 
-                        String mediaType = contentResolver.getType(uri);
-                        if (mediaType == null || mediaType.isEmpty()) {
-                            mediaType = "application/octet-stream";
-                        }
-
-                        byte[] bytes = FolderChooser.getBytesFromInputStream(
-                                contentResolver.openInputStream(uri)
-                        );
-
-                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
+//                        String mediaType = contentResolver.getType(uri);
+//                        if (mediaType == null || mediaType.isEmpty()) {
+//                            mediaType = "application/octet-stream";
+//                        }
+//
+//                        byte[] bytes = FolderChooser.getBytesFromInputStream(
+//                                contentResolver.openInputStream(uri)
+//                        );
+//
+//                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
 
                         JSONObject result = new JSONObject();
-                        result.put("data", base64);
-                        result.put("mediaType", mediaType);
+//                        result.put("data", base64);
+//                        result.put("mediaType", mediaType);
                         result.put("name", name);
                         result.put("uri", uri);
 
