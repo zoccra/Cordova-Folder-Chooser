@@ -123,6 +123,12 @@ public class FolderChooser extends CordovaPlugin {
                     Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
                             DocumentsContract.getTreeDocumentId(uri));
 
+                    for (File f : context.getExternalFilesDirs("")) {
+                        if (Environment.isExternalStorageRemovable(f)) {
+                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
+                        }
+                    }
+
                     try {
                         final int takeFlags = data.getFlags()
                                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION
