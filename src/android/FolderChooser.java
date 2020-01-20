@@ -33,7 +33,7 @@ public class FolderChooser extends CordovaPlugin {
 
     private CallbackContext callback;
 
-    private void chooseFile (CallbackContext callbackContext, String accept) throws JSONException {
+    private void chooseFile (CallbackContext callbackContext, String accept) throws IOException {
         try {
             Context context = this.cordova.getActivity().getApplicationContext();
 
