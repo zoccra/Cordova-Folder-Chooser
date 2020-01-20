@@ -73,7 +73,7 @@ public class FolderChooser extends CordovaPlugin {
             CallbackContext callbackContext
     ) {
         try {
-            if (action.equals(FolderChooser.ACTION_OPEN)) {
+            if (action.equals(FolderChooser.ACTION_SAVE_FILE_TO_USB)) {
                 this.chooseFile(callbackContext, args.getString(0));
                 return true;
             }
