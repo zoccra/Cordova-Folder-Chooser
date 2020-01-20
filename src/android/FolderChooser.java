@@ -126,10 +126,10 @@ public class FolderChooser extends CordovaPlugin {
 
 
                     if (uri != null) {
-                        ContentResolver contentResolver =
-                                this.cordova.getActivity().getContentResolver();
+//                        ContentResolver contentResolver =
+//                                this.cordova.getActivity().getContentResolver();
 
-                        String name = FolderChooser.getDisplayName(contentResolver, uri);
+//                        String name = FolderChooser.getDisplayName(contentResolver, uri);
 
 //                        String mediaType = contentResolver.getType(uri);
 //                        if (mediaType == null || mediaType.isEmpty()) {
@@ -145,7 +145,7 @@ public class FolderChooser extends CordovaPlugin {
                         JSONObject result = new JSONObject();
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-                        result.put("name", name);
+//                        result.put("name", name);
                         result.put("uri", uri);
 
                         this.callback.success(result);
