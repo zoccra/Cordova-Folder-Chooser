@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.os.Environment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
