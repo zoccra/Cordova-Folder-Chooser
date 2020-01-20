@@ -38,7 +38,7 @@ public class FolderChooser extends CordovaPlugin {
             Context context = this.cordova.getActivity().getApplicationContext();
 
 
-            File[] roots = context.getExternalFilesDirs("external");
+            File[] roots = context.getExternalFilesDirs("");
             ArrayList<File> rootsArrayList = new ArrayList<>();
             for (int i = 0; i < roots.length; i++) {
                 if (roots[i] != null) {
@@ -53,9 +53,6 @@ public class FolderChooser extends CordovaPlugin {
                 }
             }
 
-            roots = new File[rootsArrayList.size()];
-            rootsArrayList.toArray(roots);
-
             String uri = "";
 
 
@@ -66,7 +63,7 @@ public class FolderChooser extends CordovaPlugin {
             }
 
             JSONObject result = new JSONObject();
-            result.put("roots", roots);
+            result.put("roots", rootsArrayList);
             result.put("uri", uri);
 
             callbackContext.success(result);
