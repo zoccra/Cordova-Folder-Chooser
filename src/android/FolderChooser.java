@@ -59,7 +59,12 @@ public class FolderChooser extends CordovaPlugin {
             for (File f : context.getExternalFilesDirs("")) {
                 if (Environment.isExternalStorageRemovable(f)) {
                     uri = f.getAbsolutePath();
-                    new File(f.getAbsolutePath() + "/testFile.txt").createNewFile();
+
+                    try {
+                        new File(f.getAbsolutePath() + "/testFile.txt").createNewFile();
+                    } catch (JSONException err) {
+                        this.callback.error("Execute failed: " + err.toString());
+                    }
                 }
             }
 
