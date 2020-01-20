@@ -119,7 +119,7 @@ public class FolderChooser extends CordovaPlugin {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
 
-                    ContentResolver contentResolver = getActivity().getContentResolver();
+                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
                     Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
                             DocumentsContract.getTreeDocumentId(uri));
 
