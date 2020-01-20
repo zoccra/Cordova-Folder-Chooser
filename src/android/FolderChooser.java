@@ -16,6 +16,7 @@ import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.File;
 import java.lang.Exception;
 
 import org.apache.cordova.CallbackContext;
@@ -110,8 +111,8 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
-                    String sourceFilename= uri.getPath();
-                    String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath()+"/abc.mp3";
+                    File path = Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_PICTURES);
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
@@ -136,7 +137,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", destinationFilename);
+                        result.put("uri", uri);
 
                         this.callback.success(result);
                     }
