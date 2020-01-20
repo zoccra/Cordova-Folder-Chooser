@@ -81,6 +81,7 @@ public class FolderChooser extends CordovaPlugin {
 //        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
 //        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
 
         Intent chooser = Intent.createChooser(intent, "Open folder");
