@@ -140,7 +140,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
-                    String uri = '';
+                    String uri = "";
 //                    Uri uri = data.getData();
 
                     Context context = this.cordova.getActivity().getApplicationContext();
