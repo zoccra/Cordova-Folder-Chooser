@@ -26,6 +26,7 @@ import android.content.ContentResolver;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Document;
 import android.content.Context;
+import java.util.ArrayList;
 
 public class FolderChooser extends CordovaPlugin {
     private static final String ACTION_SAVE_FILE_TO_USB = "saveFileToUSB";
@@ -33,6 +34,7 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
 
     private void chooseFile (CallbackContext callbackContext, String accept) {
+        File[] roots = context.getExternalFilesDirs("external");
         ArrayList<File> rootsArrayList = new ArrayList<>();
         for (int i = 0; i < roots.length; i++) {
             if (roots[i] != null) {
