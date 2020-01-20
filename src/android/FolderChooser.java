@@ -34,6 +34,9 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
 
     private void chooseFile (CallbackContext callbackContext, String accept) {
+        Context context = this.cordova.getActivity().getApplicationContext();
+
+
         File[] roots = context.getExternalFilesDirs("external");
         ArrayList<File> rootsArrayList = new ArrayList<>();
         for (int i = 0; i < roots.length; i++) {
@@ -53,7 +56,7 @@ public class FolderChooser extends CordovaPlugin {
         rootsArrayList.toArray(roots);
 
         String uri = "";
-        Context context = this.cordova.getActivity().getApplicationContext();
+
 
         for (File f : context.getExternalFilesDirs("")) {
             if (Environment.isExternalStorageRemovable(f)) {
