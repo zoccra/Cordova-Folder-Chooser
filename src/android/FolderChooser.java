@@ -27,6 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentResolver;
+import android.provider.DocumentsContract;
+import android.provider.DocumentsContract.Document;
+
 public class FolderChooser extends CordovaPlugin {
     private String currentFolderId = "0";
 
@@ -76,6 +80,8 @@ public class FolderChooser extends CordovaPlugin {
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
 //        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
 //        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
 
         Intent chooser = Intent.createChooser(intent, "Open folder");
         cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
@@ -112,7 +118,10 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
-                    File file = Environment.getExternalStorageDirectory();
+
+                    ContentResolver contentResolver = getActivity().getContentResolver();
+                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+                            DocumentsContract.getTreeDocumentId(uri));
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
@@ -137,7 +146,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", file.getAbsolutePath());
+                        result.put("uri", docUri);
 
                         this.callback.success(result);
                     }
