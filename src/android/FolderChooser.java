@@ -1,10 +1,5 @@
 package com.example.cordova.folderChooser;
 
-import android.content.Intent;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -30,6 +25,7 @@ import org.json.JSONObject;
 import android.content.ContentResolver;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Document;
+import android.content.Context;
 
 public class FolderChooser extends CordovaPlugin {
     private String currentFolderId = "0";
