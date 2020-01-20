@@ -112,8 +112,7 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
-                    File path = Environment.getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES);
+                    File path = Environment.getExternalStoragePublicDirectory();
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
