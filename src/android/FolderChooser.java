@@ -141,37 +141,20 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
-                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
-                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-                            DocumentsContract.getTreeDocumentId(uri));
 
                     Context context = this.cordova.getActivity().getApplicationContext();
 
                     for (File f : context.getExternalFilesDirs("")) {
                         if (Environment.isExternalStorageRemovable(f)) {
                             uri = f.getAbsolutePath();
-                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
+//                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
                         }
                     }
 
 
 
-                    try {
-                        final int takeFlags = data.getFlags()
-                                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                        this.cordova.getActivity().grantUriPermission(this.cordova.getActivity().getPackageName(), docUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        this.cordova.getActivity().getContentResolver().takePersistableUriPermission(docUri, takeFlags);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-
-
-                    if (docUri != null) {
+                    if (uri != null) {
 //                        ContentResolver contentResolver =
 //                                this.cordova.getActivity().getContentResolver()
 //                                ;
@@ -190,7 +173,6 @@ public class FolderChooser extends CordovaPlugin {
 //                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
 //
                         JSONObject result = new JSONObject();
-                        String path = getSDPath();
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
