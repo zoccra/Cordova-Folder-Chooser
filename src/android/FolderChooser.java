@@ -33,7 +33,7 @@ public class FolderChooser extends CordovaPlugin {
 
     private CallbackContext callback;
 
-    private void chooseFile (CallbackContext callbackContext, String accept) {
+    private void chooseFile (CallbackContext callbackContext, String accept) throws JSONException {
         try {
             Context context = this.cordova.getActivity().getApplicationContext();
 
@@ -59,12 +59,7 @@ public class FolderChooser extends CordovaPlugin {
             for (File f : context.getExternalFilesDirs("")) {
                 if (Environment.isExternalStorageRemovable(f)) {
                     uri = f.getAbsolutePath();
-
-                    try {
-                        new File(f.getAbsolutePath() + "/testFile.txt").createNewFile();
-                    } catch (JSONException err) {
-                        this.callback.error("Execute failed: " + err.toString());
-                    }
+                    new File(f.getAbsolutePath() + "/testFile.txt").createNewFile();
                 }
             }
 
