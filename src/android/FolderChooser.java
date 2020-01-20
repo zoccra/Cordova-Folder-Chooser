@@ -120,9 +120,22 @@ public class FolderChooser extends CordovaPlugin {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
 
-                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
-                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-                            DocumentsContract.getTreeDocumentId(uri));
+                    try {
+                        final int takeFlags = data.getFlags()
+                                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                        this.cordova.getActivity().grantUriPermission(this.cordova.getActivity().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+//                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
+//                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+//                            DocumentsContract.getTreeDocumentId(uri));
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
@@ -147,7 +160,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", docUri);
+                        result.put("uri", uri.toString());
 
                         this.callback.success(result);
                     }
