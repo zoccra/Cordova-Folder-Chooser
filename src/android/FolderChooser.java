@@ -111,7 +111,7 @@ public class FolderChooser extends CordovaPlugin {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
                     String sourceFilename= uri.getPath();
-                    String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath()+File.separatorChar + "abc.mp3";
+                    String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath()+"/abc.mp3";
 
                     if (uri != null) {
 //                        ContentResolver contentResolver =
