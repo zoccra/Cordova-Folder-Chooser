@@ -161,7 +161,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", docUri.toString());
+                        result.put("uri", docUri);
 
                         this.callback.success(result);
                     }
