@@ -68,7 +68,7 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
 
     private void chooseFile (CallbackContext callbackContext, String accept) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 //        intent.setType("*/*");
 //        if (!accept.equals("*/*")) {
 //            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
@@ -108,47 +108,20 @@ public class FolderChooser extends CordovaPlugin {
         return false;
     }
 
-    public static String getSDPath() {
-        String filepath = "";
-        String[] strPath = {"/storage/sdcard1", "/storage/extsdcard",
-                "/storage/sdcard0/external_sdcard", "/mnt/extsdcard",
-                "/mnt/sdcard/external_sd", "/mnt/external_sd",
-                "/mnt/media_rw/sdcard1", "/removable/microsd", "/mnt/emmc",
-                "/storage/external_SD", "/storage/ext_sd",
-                "/storage/removable/sdcard1", "/data/sdext", "/data/sdext2",
-                "/data/sdext3", "/data/sdext4", "/emmc", "/sdcard/sd",
-                "/mnt/sdcard/bpemmctest", "/mnt/sdcard/_ExternalSD",
-                "/mnt/sdcard-ext", "/mnt/Removable/MicroSD",
-                "/Removable/MicroSD", "/mnt/external1", "/mnt/extSdCard",
-                "/mnt/extsd", "/mnt/usb_storage", "/mnt/extSdCard",
-                "/mnt/UsbDriveA", "/mnt/UsbDriveB"};
-
-        for (String value : strPath) {
-            File f = null;
-            f = new File(value);
-            if (f.exists() && f.isDirectory()) {
-                filepath = value;
-                break;
-            }
-        }
-        return filepath;
-    }
-
-
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     String uri = "";
-//                    Uri uri = data.getData();
+                    Uri uri = data.getData();
 
                     Context context = this.cordova.getActivity().getApplicationContext();
 
                     for (File f : context.getExternalFilesDirs("")) {
                         if (Environment.isExternalStorageRemovable(f)) {
-                            uri = f.getAbsolutePath();
-//                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
+//                            uri = f.getAbsolutePath();
+                            new File(f.getAbsolutePath() + "/file.txt").createNewFile();
                         }
                     }
 
