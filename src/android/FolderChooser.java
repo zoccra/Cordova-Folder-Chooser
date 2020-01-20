@@ -119,25 +119,26 @@ public class FolderChooser extends CordovaPlugin {
             if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
+                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
+                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
+                            DocumentsContract.getTreeDocumentId(uri));
 
                     try {
                         final int takeFlags = data.getFlags()
                                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                        this.cordova.getActivity().grantUriPermission(this.cordova.getActivity().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                        this.cordova.getActivity().grantUriPermission(this.cordova.getActivity().getPackageName(), docUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        this.cordova.getActivity().getContentResolver().takePersistableUriPermission(docUri, takeFlags);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
 
-//                    ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
-//                    Uri docUri = DocumentsContract.buildDocumentUriUsingTree(uri,
-//                            DocumentsContract.getTreeDocumentId(uri));
 
-                    if (uri != null) {
+
+                    if (docUri != null) {
 //                        ContentResolver contentResolver =
 //                                this.cordova.getActivity().getContentResolver()
 //                                ;
@@ -160,7 +161,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", uri.toString());
+                        result.put("uri", docUri.toString());
 
                         this.callback.success(result);
                     }
