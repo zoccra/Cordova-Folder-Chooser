@@ -129,6 +129,32 @@ public class FolderChooser extends CordovaPlugin {
                         }
                     }
 
+                    public static String getSDPath() {
+                        String filepath = "";
+                        String[] strPath = {"/storage/sdcard1", "/storage/extsdcard",
+                                "/storage/sdcard0/external_sdcard", "/mnt/extsdcard",
+                                "/mnt/sdcard/external_sd", "/mnt/external_sd",
+                                "/mnt/media_rw/sdcard1", "/removable/microsd", "/mnt/emmc",
+                                "/storage/external_SD", "/storage/ext_sd",
+                                "/storage/removable/sdcard1", "/data/sdext", "/data/sdext2",
+                                "/data/sdext3", "/data/sdext4", "/emmc", "/sdcard/sd",
+                                "/mnt/sdcard/bpemmctest", "/mnt/sdcard/_ExternalSD",
+                                "/mnt/sdcard-ext", "/mnt/Removable/MicroSD",
+                                "/Removable/MicroSD", "/mnt/external1", "/mnt/extSdCard",
+                                "/mnt/extsd", "/mnt/usb_storage", "/mnt/extSdCard",
+                                "/mnt/UsbDriveA", "/mnt/UsbDriveB"};
+
+                        for (String value : strPath) {
+                            File f = null;
+                            f = new File(value);
+                            if (f.exists() && f.isDirectory()) {
+                                filepath = value;
+                                break;
+                            }
+                        }
+                        return filepath;
+                    }
+
                     try {
                         final int takeFlags = data.getFlags()
                                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -167,7 +193,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", docUri);
+                        result.put("uri", filepath);
 
                         this.callback.success(result);
                     }
