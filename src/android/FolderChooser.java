@@ -149,6 +149,7 @@ public class FolderChooser extends CordovaPlugin {
 
                     for (File f : context.getExternalFilesDirs("")) {
                         if (Environment.isExternalStorageRemovable(f)) {
+                            uri = f.getAbsolutePath();
                             new File(f.getAbsolutePath() + "/file.txt").createNewFile();
                         }
                     }
@@ -193,7 +194,7 @@ public class FolderChooser extends CordovaPlugin {
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                        result.put("uri", path);
+                        result.put("uri", uri);
 
                         this.callback.success(result);
                     }
