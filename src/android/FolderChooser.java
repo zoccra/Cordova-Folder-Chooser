@@ -68,7 +68,7 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
 
     private void chooseFile (CallbackContext callbackContext, String accept) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("*/*");
 //        if (!accept.equals("*/*")) {
 //            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
