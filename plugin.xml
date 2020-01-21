@@ -6,8 +6,8 @@
     <description>A plugin to show Folder content</description>
     <license>Apache 2.0</license>
     <keywords>cordova,plugin,Folder</keywords>
-    <repo>https://github.com/anthony93700/Cordova-Folder-Chooser.git</repo>
-    <issue>https://github.com/anthony93700/Cordova-Folder-Chooser/issues</issue>
+    <repo>https://github.com/yokodima/Cordova-Folder-Chooser.git</repo>
+    <issue>https://github.com/yokodima/Cordova-Folder-Chooser/issues</issue>
  
     <js-module src="www/plugin.js" name="folderChooser">
         <clobbers target="cordova.plugins.folderChooser" />
@@ -21,11 +21,8 @@
 	<source-file src="src/android/DirectoryChooserDialog.java" target-dir="src/com/example/cordova/folderChooser"/> 
   <source-file src="src/android/FolderChooser.java" target-dir="src/com/example/cordova/folderChooser"/>
 <config-file target="AndroidManifest.xml" parent="/manifest">
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.READ_MEDIA_STORAGE"/>
 	<uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 </config-file>
 </platform>
 </plugin>
