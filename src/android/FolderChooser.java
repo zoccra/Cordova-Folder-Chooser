@@ -1,16 +1,8 @@
 package com.example.cordova.folderChooser;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.os.Environment;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
 import java.lang.Exception;
@@ -22,9 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentResolver;
-import android.provider.DocumentsContract;
-import android.provider.DocumentsContract.Document;
 import android.content.Context;
 import java.util.ArrayList;
 
@@ -36,7 +25,6 @@ public class FolderChooser extends CordovaPlugin {
     private void chooseFile (CallbackContext callbackContext, String accept) {
         try {
             Context context = this.cordova.getActivity().getApplicationContext();
-
 
             File[] roots = context.getExternalFilesDirs("");
             ArrayList<File> rootsArrayList = new ArrayList<>();
