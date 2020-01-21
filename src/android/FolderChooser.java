@@ -25,24 +25,7 @@ public class FolderChooser extends CordovaPlugin {
     private void chooseFile (CallbackContext callbackContext, String accept) {
         try {
             Context context = this.cordova.getActivity().getApplicationContext();
-
-            File[] roots = context.getExternalFilesDirs("");
-            ArrayList<File> rootsArrayList = new ArrayList<>();
-            for (int i = 0; i < roots.length; i++) {
-                if (roots[i] != null) {
-                    String path = roots[i].getPath();
-                    int index = path.lastIndexOf("/Android/data/");
-                    if (index > 0) {
-                        path = path.substring(0, index);
-                        if (!path.equals(Environment.getExternalStorageDirectory().getPath())) {
-                            rootsArrayList.add(new File(path));
-                        }
-                    }
-                }
-            }
-
             String uri = "";
-
 
             for (File f : context.getExternalFilesDirs("")) {
                 if (Environment.isExternalStorageRemovable(f)) {
@@ -56,10 +39,9 @@ public class FolderChooser extends CordovaPlugin {
             }
 
             JSONObject result = new JSONObject();
-            result.put("roots", rootsArrayList);
             result.put("uri", uri);
-
             callbackContext.success(result);
+
         } catch (JSONException err) {
             this.callback.error("Execute failed: " + err.toString());
         }
