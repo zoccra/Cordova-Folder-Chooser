@@ -206,13 +206,6 @@ public class FolderChooser extends CordovaPlugin {
                 result.put("isDocumentUri" + DocumentsContract.isDocumentUri(cordova.getActivity().getApplicationContext(), file.getUri()));
             }
 
-
-//            for (int i = 0; i < documents.length; i++)
-//            {
-//                result.put("file" + documents[i], documents[i].getName());
-//            }
-
-            result.put("files", documents);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
