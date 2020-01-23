@@ -202,9 +202,9 @@ public class FolderChooser extends CordovaPlugin {
             DocumentFile[] documents = backupsDir.listFiles();
 
 
-            for (int i = 0; i < files.length; i++)
+            for (int i = 0; i < documents.length; i++)
             {
-                result.put("file" + files[i], files[i].getName());
+                result.put("file" + documents[i], documents[i].getName());
             }
 
             result.put("files", documents);
