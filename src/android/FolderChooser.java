@@ -121,7 +121,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             DocumentFile newFile = pickedDir.createFile("application/vnd.android.package-archive", inputFile);
             out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
-            in = new FileInputStream(inputPath + inputFile);
+            in = new FileInputStream(inputPath + "/" + inputFile);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -190,7 +190,7 @@ public class FolderChooser extends CordovaPlugin {
                 try {
                     Uri uri = data.getData();
 
-                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir("").getAbsolutePath(), "file", uri);
+                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir("").getAbsolutePath(), "file.txt", uri);
                     JSONObject result = new JSONObject();
                     result.put("error", errorCopy);
                     result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir("").getAbsolutePath());
