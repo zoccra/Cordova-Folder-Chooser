@@ -180,14 +180,16 @@ public class FolderChooser extends CordovaPlugin {
         if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
             if (resultCode == Activity.RESULT_OK) {
                 try {
+                    JSONObject result = new JSONObject();
                     Uri uri = data.getData();
 
                     String errorCopy = copyFile(this.inputFileName, uri);
-                    JSONObject result = new JSONObject();
+                    if (errorCopy == null) {
+                        deleteFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(null) + "/" + inputFileName);
+                    } else {
+                        result.put("error", errorCopy);
+                    }
 
-
-                    result.put("error", errorCopy);
-                    result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir(null));
                     result.put("uri", uri);
 
                     this.callback.success(result);
@@ -207,33 +209,10 @@ public class FolderChooser extends CordovaPlugin {
         }
     }
 
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = this.cordova.getActivity().getContentResolver()
-                .openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-
-        parcelFileDescriptor.close();
-
-        return image;
-    }
-
-    private String readTextFromUri(Uri uri) throws IOException {
-        InputStream inputStream = this.cordova.getActivity().getContentResolver().openInputStream(uri);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        inputStream.close();
-        return stringBuilder.toString();
-    }
-
-    private void createFile(String mimeType, String fileName) {
+    private void createFileAction(String mimeType, String fileName) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        String mimeType = getFileMimeType(fileName);
-        if (mimeType != nul) {
+        mimeType = getFileMimeType(fileName);
+        if (mimeType != null) {
             intent.setType(mimeType);
         }
         intent.putExtra(Intent.EXTRA_TITLE, fileName);
