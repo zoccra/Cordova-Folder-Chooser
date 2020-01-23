@@ -51,6 +51,7 @@ import java.util.ArrayList;
 
 public class FolderChooser extends CordovaPlugin {
     private static final String ACTION_SAVE_FILE_TO_USB = "saveFileToUSB";
+    private static final String ACTION_GET_BACKUPS_FROM_USB = "getBackupsFromUSB";
     private String inputFileName = null;
 
     private CallbackContext callback;
@@ -155,8 +156,8 @@ public class FolderChooser extends CordovaPlugin {
         return error;
     }
 
-    private void chooseFile(CallbackContext callbackContext, String accept) {
-        this.inputFileName = accept;
+    private void chooseFile(CallbackContext callbackContext, String fileName) {
+        this.inputFileName = fileName;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("application/vnd.android.package-archive");
 //        if (!accept.equals("*/*")) {
@@ -222,6 +223,21 @@ public class FolderChooser extends CordovaPlugin {
         DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
     }
 
+    private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
+        Uri usbUrl = URI.parse(uri);
+        JSONObject result = new JSONObject();
+        File directory = new File(usbUrl);
+        File[] files = directory.listFiles();
+
+        result.put("Files Size:", files.length);
+        for (int i = 0; i < files.length; i++)
+        {
+            result.put("File: " + files[i], files[i].getName());
+        }
+
+        this.callback.success(result);
+    }
+
     private void getMetaData(Uri uri) throws JSONException {
 //        Cursor cursor = this.cordova.getActivity().getContentResolver()
 //                .query(uri, null, null, null, null, null);
@@ -280,6 +296,9 @@ public class FolderChooser extends CordovaPlugin {
         try {
             if (action.equals(FolderChooser.ACTION_SAVE_FILE_TO_USB)) {
                 this.chooseFile(callbackContext, args.getString(0));
+                return true;
+            } else if (action.equals(FolderChooser.ACTION_GET_BACKUPS_FROM_USB)) {
+                this.getBackupsListByUri(callbackContext, args.getString(0));
                 return true;
             }
         } catch (JSONException err) {
