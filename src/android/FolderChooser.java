@@ -97,7 +97,7 @@ public class FolderChooser extends CordovaPlugin {
 
     private static String getFileMimeType(String fileName) {
         String mimeType = null;
-        mimeType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         return mimeType;
     }
 
@@ -107,10 +107,10 @@ public class FolderChooser extends CordovaPlugin {
         OutputStream out = null;
         String error = null;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
-        String extension = getFileMimeType(inputFile);
+        String mimeType = getFileMimeType(inputFile);
 
         try {
-            DocumentFile newFile = pickedDir.createFile("application/" + extension, inputFile);
+            DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
             out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
             in = new FileInputStream(inputPath + "/" + inputFile);
 
@@ -213,55 +213,6 @@ public class FolderChooser extends CordovaPlugin {
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
-        }
-    }
-
-    private void getMetaData(Uri uri) throws JSONException {
-//        Cursor cursor = this.cordova.getActivity().getContentResolver()
-//                .query(uri, null, null, null, null, null);
-//
-//        if (cursor != null && cursor.moveToFirst()) {
-//            String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-//
-//            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-//            String size = null;
-//            if (!cursor.isNull(sizeIndex)){
-//                size = cursor.getString(sizeIndex);
-//            } else {
-//                size = "Unknown";
-//            }
-//        }
-//        cursor.close();
-
-//        String sourceFilename = uri.getPath();
-//        String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "abc.mp3";
-
-        if (uri != null) {
-//                        ContentResolver contentResolver =
-//                                this.cordova.getActivity().getContentResolver()
-//                                ;
-//
-//                        String name = FolderChooser.getDisplayName(contentResolver, uri);
-//
-//                        String mediaType = contentResolver.getType(uri);
-//                        if (mediaType == null || mediaType.isEmpty()) {
-//                            mediaType = "application/octet-stream";
-//                        }
-//
-//                        byte[] bytes = FolderChooser.getBytesFromInputStream(
-//                                contentResolver.openInputStream(uri)
-//                        );
-//
-//                        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-//
-            JSONObject result = new JSONObject();
-
-//                        result.put("data", base64);
-//                        result.put("mediaType", mediaType);
-//                        result.put("name", name);
-            result.put("uri", uri);
-
-            this.callback.success(result);
         }
     }
 
