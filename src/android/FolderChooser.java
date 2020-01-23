@@ -198,7 +198,7 @@ public class FolderChooser extends CordovaPlugin {
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
         try {
             JSONObject result = new JSONObject();
-            File directory = new File(uri);
+            File directory = new File(Uri.parse(uri).getPath());
             File[] files = directory.listFiles();
 //
 //
