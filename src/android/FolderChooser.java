@@ -136,11 +136,14 @@ public class FolderChooser extends CordovaPlugin {
 //                final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 //                this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-                try {
-                    getMetaData(uri);
-                } catch (JSONException err) {
+                JSONObject result = new JSONObject();
 
-                }
+//                        result.put("data", base64);
+//                        result.put("mediaType", mediaType);
+//                        result.put("name", name);
+                result.put("uri", uri);
+
+                this.callback.success(result);
 
             } else {
                 this.callback.error("Folder URI was null.");
@@ -206,24 +209,24 @@ public class FolderChooser extends CordovaPlugin {
     }
 
     private void getMetaData(Uri uri) throws JSONException {
-        Cursor cursor = this.cordova.getActivity().getContentResolver()
-                .query(uri, null, null, null, null, null);
+//        Cursor cursor = this.cordova.getActivity().getContentResolver()
+//                .query(uri, null, null, null, null, null);
+//
+//        if (cursor != null && cursor.moveToFirst()) {
+//            String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//
+//            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+//            String size = null;
+//            if (!cursor.isNull(sizeIndex)){
+//                size = cursor.getString(sizeIndex);
+//            } else {
+//                size = "Unknown";
+//            }
+//        }
+//        cursor.close();
 
-        if (cursor != null && cursor.moveToFirst()) {
-            String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-
-            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-            String size = null;
-            if (!cursor.isNull(sizeIndex)){
-                size = cursor.getString(sizeIndex);
-            } else {
-                size = "Unknown";
-            }
-        }
-        cursor.close();
-
-        String sourceFilename = uri.getPath();
-        String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "abc.mp3";
+//        String sourceFilename = uri.getPath();
+//        String destinationFilename = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "abc.mp3";
 
         if (uri != null) {
 //                        ContentResolver contentResolver =
