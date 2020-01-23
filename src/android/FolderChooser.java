@@ -31,14 +31,19 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import java.io.FileDescriptor;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+
 import java.io.FileNotFoundException;
+
 import android.support.v4.provider.DocumentFile;
+
 import java.io.FileInputStream;
 
 
@@ -89,15 +94,15 @@ public class FolderChooser extends CordovaPlugin {
         return "File";
     }
 
-    private String getNameFromURI(Uri contenturi){
+    private String getNameFromURI(Uri contenturi) {
 
         String[] proj = {
                 OpenableColumns.DISPLAY_NAME,
                 OpenableColumns.SIZE
         };
         String name = null;
-        int size= 0;
-        Cursor metadataCursor = this.cordova.getActivity().getContentResolver().query(contenturi,  proj, null, null, null);
+        int size = 0;
+        Cursor metadataCursor = this.cordova.getActivity().getContentResolver().query(contenturi, proj, null, null, null);
 
         if (metadataCursor != null) {
             try {
@@ -113,13 +118,19 @@ public class FolderChooser extends CordovaPlugin {
         return name;
     }
 
+    private static String getFileMimeType(fileName) {
+        String mimeType = null;
+        mimeType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        return mimeType;
+    }
+
     private String copyFile(String inputFile, Uri treeUri) {
         String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
         InputStream in = null;
         OutputStream out = null;
         String error = null;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
-        String extension = inputFile.substring(inputFile.lastIndexOf(".")+1,inputFile.length());
+        String extension = getFileMimeType(inputFile);
 
         try {
             DocumentFile newFile = pickedDir.createFile("application/" + extension, inputFile);
@@ -162,29 +173,6 @@ public class FolderChooser extends CordovaPlugin {
         pluginResult.setKeepCallback(true);
         this.callback = callbackContext;
         callbackContext.sendPluginResult(pluginResult);
-//
-//        try {
-//            Context context = this.cordova.getActivity().getApplicationContext();
-//            String uri = "";
-//
-//            for (File f : context.getExternalFilesDirs("")) {
-//                if (Environment.isExternalStorageRemovable(f)) {
-//                    uri = f.getAbsolutePath();
-//                    try {
-//                        new File(f.getAbsolutePath() + "/testFile.txt").createNewFile();
-//                    } catch (IOException err) {
-//                        this.callback.error("Execute create file is failed: " + err.toString());
-//                    }
-//                }
-//            }
-//
-//            JSONObject result = new JSONObject();
-//            result.put("uri", uri);
-//            callbackContext.success(result);
-//
-//        } catch (JSONException err) {
-//            this.callback.error("Execute failed: " + err.toString());
-//        }
     }
 
     @Override
@@ -203,8 +191,7 @@ public class FolderChooser extends CordovaPlugin {
                     result.put("uri", uri);
 
                     this.callback.success(result);
-                }
-                catch (Exception err) {
+                } catch (Exception err) {
                     this.callback.error("Failed to read file: " + err.toString());
                 }
 
@@ -213,18 +200,6 @@ public class FolderChooser extends CordovaPlugin {
                 this.callback.error("Folder URI was null.");
             }
 
-        } else if (requestCode == FolderChooser.CREATE_REQUEST_CODE && this.callback != null) {
-            if (resultCode == Activity.RESULT_OK) {
-//                Uri uri = data.getData();
-//
-//                try {
-//                    getMetaData(uri);
-//                } catch (JSONException err) {
-//
-//                }
-            } else {
-                this.callback.error("File create error.");
-            }
         } else if (resultCode == Activity.RESULT_CANCELED) {
             this.callback.success("RESULT_CANCELED");
         } else {
@@ -255,15 +230,12 @@ public class FolderChooser extends CordovaPlugin {
         return stringBuilder.toString();
     }
 
-    private void writeTextToUri(Uri uri) throws IOException {
-        OutputStream outputStream = this.cordova.getActivity().getContentResolver().openOutputStream(uri);
-        outputStream.write(("Text").getBytes());
-        outputStream.close();
-    }
-
     private void createFile(String mimeType, String fileName) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.setType("application/vnd.android.package-archive");
+        String mimeType = getFileMimeType(fileName);
+        if (mimeType != nul) {
+            intent.setType(mimeType);
+        }
         intent.putExtra(Intent.EXTRA_TITLE, fileName);
         Intent chooser = Intent.createChooser(intent, "Open document");
         cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
