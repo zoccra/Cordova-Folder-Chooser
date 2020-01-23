@@ -186,12 +186,8 @@ public class FolderChooser extends CordovaPlugin {
                     Uri uri = data.getData();
 
                     String errorCopy = copyFile(this.inputFileName, uri);
-                    if (errorCopy == null) {
-                        deleteFile(URI.parse(cordova.getActivity().getApplicationContext().getExternalFilesDir(null) + "/" + inputFileName));
-                    } else {
-                        result.put("error", errorCopy);
-                    }
 
+                    result.put("error", errorCopy);
                     result.put("uri", uri);
 
                     this.callback.success(result);
@@ -225,9 +221,8 @@ public class FolderChooser extends CordovaPlugin {
     }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
-        Uri usbUrl = URI.parse(uri);
         JSONObject result = new JSONObject();
-        File directory = new File(usbUrl);
+        File directory = new File(uri);
         File[] files = directory.listFiles();
 
         result.put("Files Size:", files.length);
