@@ -167,7 +167,7 @@ public class FolderChooser extends CordovaPlugin {
 
     private String reasTextFromUri(Uri uri) throws IOException {
         InputStream inputStream = this.cordova.getActivity().getContentResolver().openInputStream(uri);
-        BufferedReader reader = new BufferReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -187,7 +187,8 @@ public class FolderChooser extends CordovaPlugin {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.setType("application/vnd.android.package-archive");
         intent.putExtra(Intent.EXTRA_TITLE, fileName);
-        cordova.startActivityForResult(intent, CREATE_REQUEST_CODE);
+        Intent chooser = Intent.createChooser(intent, "Open document");
+        cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
     }
 
     private void deleteFile(Uri uri) {
