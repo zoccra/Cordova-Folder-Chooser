@@ -185,7 +185,7 @@ public class FolderChooser extends CordovaPlugin {
 
                     String errorCopy = copyFile(this.inputFileName, uri);
                     if (errorCopy == null) {
-                        deleteFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(null) + "/" + inputFileName);
+                        deleteFile(URI.parse(cordova.getActivity().getApplicationContext().getExternalFilesDir(null) + "/" + inputFileName));
                     } else {
                         result.put("error", errorCopy);
                     }
@@ -196,8 +196,6 @@ public class FolderChooser extends CordovaPlugin {
                 } catch (Exception err) {
                     this.callback.error("Failed to read file: " + err.toString());
                 }
-
-
             } else {
                 this.callback.error("Folder URI was null.");
             }
