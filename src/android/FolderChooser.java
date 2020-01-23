@@ -37,6 +37,7 @@ import java.io.OutputStream;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import java.io.FileNotFoundException;
+import android.support.v4.provider.DocumentFile;
 
 
 import java.util.ArrayList;
@@ -109,6 +110,36 @@ public class FolderChooser extends CordovaPlugin {
         return name;
     }
 
+    private String copyFile(String inputPath, String inputFile, Uri treeUri) {
+        InputStream in = null;
+        OutputStream out = null;
+        String error = null;
+        DocumentFile pickedDir = DocumentFile.fromTreeUri(getActivity(), treeUri);
+        String extension = inputFile.substring(inputFile.lastIndexOf(".")+1,inputFile.length());
+
+        try {
+            DocumentFile newFile = pickedDir.createFile("audio/"+extension, inputFile);
+            out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
+            in = new FileInputStream(inputPath + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+
+        } catch (FileNotFoundException fnfe1) {
+            error = fnfe1.getMessage();
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        return error;
+    }
+
     private void chooseFile(CallbackContext callbackContext, String accept) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("application/vnd.android.package-archive");
@@ -160,6 +191,7 @@ public class FolderChooser extends CordovaPlugin {
                     final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
+                    copyFile(cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir, 'file.txt', uri);
                     JSONObject result = new JSONObject();
 
 //                        result.put("data", base64);
