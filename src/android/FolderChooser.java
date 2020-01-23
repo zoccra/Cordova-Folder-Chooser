@@ -189,10 +189,10 @@ public class FolderChooser extends CordovaPlugin {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     Uri uri = data.getData();
-                    final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+//                    final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                    this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-//                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir, "file", uri);
+                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir, "file", uri);
                     JSONObject result = new JSONObject();
 
 //                        result.put("data", base64);
