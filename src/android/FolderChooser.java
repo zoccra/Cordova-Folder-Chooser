@@ -27,6 +27,17 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
+import android.os.ParcelFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import java.io.FileDescriptor;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
+
+
 import java.util.ArrayList;
 
 public class FolderChooser extends CordovaPlugin {
@@ -162,8 +173,7 @@ public class FolderChooser extends CordovaPlugin {
         while ((line = reader.readLine()) != null) {
             stringBuilder.append(line);
         }
-        fileInputStream.close();
-        parcelFileDescriptor.close();
+        inputStream.close();
         return stringBuilder.toString();
     }
 
@@ -177,7 +187,7 @@ public class FolderChooser extends CordovaPlugin {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.setType("application/vnd.android.package-archive");
         intent.putExtra(Intent.EXTRA_TITLE, fileName);
-        startActivityForResult(intent, CREATE_REQUEST_CODE);
+        cordova.startActivityForResult(intent, CREATE_REQUEST_CODE);
     }
 
     private void deleteFile(Uri uri) {
