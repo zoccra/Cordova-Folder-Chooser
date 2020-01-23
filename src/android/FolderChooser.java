@@ -126,7 +126,7 @@ public class FolderChooser extends CordovaPlugin {
 
 //            in = new ByteArrayInputStream(inputBytes);
 
-            in = new FileInputStream(inputPath + "/" + inputFile + '.zip');
+            in = new FileInputStream(inputPath + "/" + inputFile + ".zip");
 
             byte[] buffer = new byte[1024];
             int read;
