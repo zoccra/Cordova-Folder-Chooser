@@ -137,6 +137,8 @@ public class FolderChooser extends CordovaPlugin {
 
         } catch (FileNotFoundException fnfe1) {
             error = fnfe1.getMessage();
+        } catch (Exception e) {
+            error = e.getMessage();
         }
 
         return error;
