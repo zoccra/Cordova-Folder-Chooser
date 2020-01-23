@@ -115,7 +115,7 @@ public class FolderChooser extends CordovaPlugin {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
-        DocumentFile pickedDir = DocumentFile.fromTreeUri(getActivity(), treeUri);
+        DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
         String extension = inputFile.substring(inputFile.lastIndexOf(".")+1,inputFile.length());
 
         try {
@@ -197,7 +197,7 @@ public class FolderChooser extends CordovaPlugin {
 
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-                    String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver(), uri);
+                    String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver()DocumentFile.fromTreeUri, uri);
 
                     result.put("name", name);
                     result.put("error", errorCopy);
