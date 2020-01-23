@@ -146,7 +146,7 @@ public class FolderChooser extends CordovaPlugin {
         return error;
     }
 
-    private void chooseFile(CallbackContext callbackContext, byte[] accept) {
+    private void chooseFile(CallbackContext callbackContext, String accept) {
         this.inputFileName = accept;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("application/vnd.android.package-archive");
