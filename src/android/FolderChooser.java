@@ -116,10 +116,10 @@ public class FolderChooser extends CordovaPlugin {
         OutputStream out = null;
         String error = null;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
-        String extension = inputFile.substring(inputFile.lastIndexOf(".")+1,inputFile.length());
+//        String extension = inputFile.substring(inputFile.lastIndexOf(".")+1,inputFile.length());
 
         try {
-            DocumentFile newFile = pickedDir.createFile("audio/"+extension, inputFile);
+            DocumentFile newFile = pickedDir.createFile("application/vnd.android.package-archive", inputFile);
             out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
             in = new FileInputStream(inputPath + inputFile);
 
