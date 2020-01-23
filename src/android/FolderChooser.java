@@ -225,14 +225,14 @@ public class FolderChooser extends CordovaPlugin {
             JSONObject result = new JSONObject();
             File directory = new File(uri);
             File[] files = directory.listFiles();
+//
+//
+//            for (int i = 0; i < files.length; i++)
+//            {
+//                result.put("file" + files[i], files[i].getName());
+//            }
 
-
-            for (int i = 0; i < files.length; i++)
-            {
-                result.put("file" + files[i], files[i].getName());
-            }
-
-            result.put("size", files.length);
+            result.put("size", files);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
