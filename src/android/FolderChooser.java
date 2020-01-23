@@ -221,17 +221,21 @@ public class FolderChooser extends CordovaPlugin {
     }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
-        JSONObject result = new JSONObject();
-        File directory = new File(uri);
-        File[] files = directory.listFiles();
+        try {
+            JSONObject result = new JSONObject();
+            File directory = new File(uri);
+            File[] files = directory.listFiles();
 
-        result.put("Files Size:", files.length);
-        for (int i = 0; i < files.length; i++)
-        {
-            result.put("File: " + files[i], files[i].getName());
+            result.put("Files Size:", files.length);
+            for (int i = 0; i < files.length; i++)
+            {
+                result.put("File: " + files[i], files[i].getName());
+            }
+
+            callbackContext.success(result);
+        } catch (Exception err) {
+            callbackContext.error("Failed to read file: " + err.toString());
         }
-
-        this.callback.success(result);
     }
 
     private void getMetaData(Uri uri) throws JSONException {
