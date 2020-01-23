@@ -36,6 +36,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
+import java.io.FileNotFoundException;
 
 
 import java.util.ArrayList;
@@ -177,7 +178,7 @@ public class FolderChooser extends CordovaPlugin {
         return stringBuilder.toString();
     }
 
-    private String writeTextToUri(Uri uri) throws IOException {
+    private void writeTextToUri(Uri uri) throws IOException {
         OutputStream outputStream = this.cordova.getActivity().getContentResolver().openOutputStream(uri);
         outputStream.write(("Text").getBytes());
         outputStream.close();
@@ -191,11 +192,11 @@ public class FolderChooser extends CordovaPlugin {
         cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
     }
 
-    private void deleteFile(Uri uri) {
+    private void deleteFile(Uri uri) throws FileNotFoundException {
         DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
     }
 
-    private void getMetaData(Uri uri) {
+    private void getMetaData(Uri uri) throws JSONException {
         Cursor cursor = this.cordova.getActivity().getContentResolver()
                 .query(uri, null, null, null, null, null);
 
