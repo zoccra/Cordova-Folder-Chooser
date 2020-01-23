@@ -38,6 +38,7 @@ import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import java.io.FileNotFoundException;
 import android.support.v4.provider.DocumentFile;
+import java.io.FileInputStream;
 
 
 import java.util.ArrayList;
@@ -196,7 +197,7 @@ public class FolderChooser extends CordovaPlugin {
 
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-                    String name = FolderChooser.getDisplayName(contentResolver, uri);
+                    String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver(), uri);
 
                     result.put("name", name);
                     result.put("error", errorCopy);
