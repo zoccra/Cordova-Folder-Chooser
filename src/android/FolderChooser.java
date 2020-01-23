@@ -113,7 +113,7 @@ public class FolderChooser extends CordovaPlugin {
         return name;
     }
 
-    private String copyFile(String inputPath, String inputFile, Uri treeUri) {
+    private String copyFile(File inputPath, String inputFile, Uri treeUri) {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
