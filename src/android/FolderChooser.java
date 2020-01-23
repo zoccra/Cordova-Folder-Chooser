@@ -118,7 +118,7 @@ public class FolderChooser extends CordovaPlugin {
         return name;
     }
 
-    private static String getFileMimeType(fileName) {
+    private static String getFileMimeType(String fileName) {
         String mimeType = null;
         mimeType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         return mimeType;
