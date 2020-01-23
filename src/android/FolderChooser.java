@@ -192,7 +192,7 @@ public class FolderChooser extends CordovaPlugin {
 
                     this.callback.success(result);
                 } catch (Exception err) {
-                    this.callback.error("Failed to read file: " + err.toString());
+                    this.callback.error("Failed to copy file: " + err.toString());
                 }
             } else {
                 this.callback.error("Folder URI was null.");
@@ -226,12 +226,13 @@ public class FolderChooser extends CordovaPlugin {
             File directory = new File(uri);
             File[] files = directory.listFiles();
 
-            result.put("Files Size:", files.length);
+
             for (int i = 0; i < files.length; i++)
             {
-                result.put("File: " + files[i], files[i].getName());
+                result.put("file" + files[i], files[i].getName());
             }
 
+            result.put("size", files.length);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
