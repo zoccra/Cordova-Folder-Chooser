@@ -201,11 +201,15 @@ public class FolderChooser extends CordovaPlugin {
             DocumentFile backupsDir = DocumentFile.fromTreeUri(cordova.getActivity(), Uri.parse(uri));
             DocumentFile[] documents = backupsDir.listFiles();
 
-
-            for (int i = 0; i < documents.length; i++)
-            {
-                result.put("file" + documents[i], documents[i].getName());
+            for (final DocumentFile file: documents) {
+                result.put("file" + documents[i], file);
             }
+
+
+//            for (int i = 0; i < documents.length; i++)
+//            {
+//                result.put("file" + documents[i], documents[i].getName());
+//            }
 
             result.put("files", documents);
             callbackContext.success(result);
