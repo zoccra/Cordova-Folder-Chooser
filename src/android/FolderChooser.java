@@ -180,11 +180,11 @@ public class FolderChooser extends CordovaPlugin {
         startActivityForResult(intent, CREATE_REQUEST_CODE);
     }
 
-    private void deleteFile(uri) {
+    private void deleteFile(Uri uri) {
         DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
     }
 
-    private void getMetaData(uri) {
+    private void getMetaData(Uri uri) {
         Cursor cursor = this.cordova.getActivity().getContentResolver()
                 .query(uri, null, null, null, null, null);
 
@@ -193,9 +193,9 @@ public class FolderChooser extends CordovaPlugin {
 
             int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
             String size = null;
-            if (!cursor,isNull(sizeIndex)){
+            if (!cursor.isNull(sizeIndex)){
                 size = cursor.getString(sizeIndex);
-            } else{
+            } else {
                 size = "Unknown";
             }
         }
