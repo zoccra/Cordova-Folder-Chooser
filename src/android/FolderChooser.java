@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import java.net.URI;
 import android.provider.MediaStore;
 import android.util.Base64;
 
@@ -94,30 +93,6 @@ public class FolderChooser extends CordovaPlugin {
         }
 
         return "File";
-    }
-
-    private String getNameFromURI(Uri contenturi) {
-
-        String[] proj = {
-                OpenableColumns.DISPLAY_NAME,
-                OpenableColumns.SIZE
-        };
-        String name = null;
-        int size = 0;
-        Cursor metadataCursor = this.cordova.getActivity().getContentResolver().query(contenturi, proj, null, null, null);
-
-        if (metadataCursor != null) {
-            try {
-                if (metadataCursor.moveToFirst()) {
-                    name = metadataCursor.getString(0);
-                    size = metadataCursor.getInt(1);
-                }
-            } finally {
-                metadataCursor.close();
-            }
-        }
-
-        return name;
     }
 
     private static String getFileMimeType(String fileName) {
@@ -223,7 +198,7 @@ public class FolderChooser extends CordovaPlugin {
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
         try {
             JSONObject result = new JSONObject();
-            File directory = new File(Uri.parse(uri));
+            File directory = new File(uri);
             File[] files = directory.listFiles();
 //
 //
