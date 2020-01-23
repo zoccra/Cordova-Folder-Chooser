@@ -163,7 +163,7 @@ public class FolderChooser extends CordovaPlugin {
                     String errorCopy = copyFile(this.inputFileName, uri);
 
                     result.put("error", errorCopy);
-                    result.put("uri", uri.toString());
+                    result.put("uri", uri);
 
                     this.callback.success(result);
                 } catch (Exception err) {
@@ -207,7 +207,7 @@ public class FolderChooser extends CordovaPlugin {
 //                result.put("file" + files[i], files[i].getName());
 //            }
 
-            result.put("size", files);
+            result.put("files", files);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
