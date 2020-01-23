@@ -197,7 +197,7 @@ public class FolderChooser extends CordovaPlugin {
 
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-                    String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver().DocumentFile.fromTreeUri, uri);
+                    String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver(), uri);
 
                     result.put("name", name);
                     result.put("error", errorCopy);
