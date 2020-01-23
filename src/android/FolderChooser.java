@@ -85,6 +85,30 @@ public class FolderChooser extends CordovaPlugin {
         return "File";
     }
 
+    public String getNameFromURI(Uri contenturi){
+
+        String[] proj = {
+                OpenableColumns.DISPLAY_NAME,
+                OpenableColumns.SIZE
+        };
+        String name = null;
+        int size= 0;
+        Cursor metadataCursor = getContentResolver().query(contenturi,  proj, null, null, null);
+
+        if (metadataCursor != null) {
+            try {
+                if (metadataCursor.moveToFirst()) {
+                    name = metadataCursor.getString(0);
+                    size = metadataCursor.getInt(1);
+                }
+            } finally {
+                metadataCursor.close();
+            }
+        }
+
+        return name;
+    }
+
     private void chooseFile(CallbackContext callbackContext, String accept) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("application/vnd.android.package-archive");
@@ -133,9 +157,8 @@ public class FolderChooser extends CordovaPlugin {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     Uri uri = data.getData();
-
-//                final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//                this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
                     JSONObject result = new JSONObject();
 
