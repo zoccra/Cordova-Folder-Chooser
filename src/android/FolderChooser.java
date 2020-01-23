@@ -113,7 +113,8 @@ public class FolderChooser extends CordovaPlugin {
         return name;
     }
 
-    private String copyFile(String inputPath, String inputFile, Uri treeUri) {
+    private String copyFile(String inputFile, Uri treeUri) {
+        String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
         InputStream in = null;
         OutputStream out = null;
         String error = null;
@@ -123,7 +124,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             DocumentFile newFile = pickedDir.createFile("application/" + extension, inputFile);
             out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
-            in = new FileInputStream(inputPath + "/" + inputFile + ".zip");
+            in = new FileInputStream(inputPath + "/" + inputFile);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -131,15 +132,13 @@ public class FolderChooser extends CordovaPlugin {
                 out.write(buffer, 0, read);
             }
             in.close();
-            // write the output file (You have now copied the file)
             out.flush();
             out.close();
 
         } catch (FileNotFoundException fnfe1) {
             error = fnfe1.getMessage();
-        } catch (Exception e) {
-            error = e.getMessage();
         }
+
         return error;
     }
 
@@ -193,7 +192,7 @@ public class FolderChooser extends CordovaPlugin {
                 try {
                     Uri uri = data.getData();
 
-                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath(), this.inputFileName, uri);
+                    String errorCopy = copyFile(this.inputFileName, uri);
                     JSONObject result = new JSONObject();
 
 
