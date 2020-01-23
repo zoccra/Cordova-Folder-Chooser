@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import android.app.Activity;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 
 public class FolderChooser extends CordovaPlugin {
     private static final String ACTION_SAVE_FILE_TO_USB = "saveFileToUSB";
+    private String inputFileName = null;
 
     private CallbackContext callback;
 
@@ -121,7 +123,10 @@ public class FolderChooser extends CordovaPlugin {
         try {
             DocumentFile newFile = pickedDir.createFile("application/vnd.android.package-archive", inputFile);
             out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
-            in = new FileInputStream(inputPath + "/" + inputFile);
+
+//            in = new ByteArrayInputStream(inputBytes);
+
+            in = new FileInputStream(inputPath + "/" + inputFile + '.zip');
 
             byte[] buffer = new byte[1024];
             int read;
@@ -141,7 +146,8 @@ public class FolderChooser extends CordovaPlugin {
         return error;
     }
 
-    private void chooseFile(CallbackContext callbackContext, String accept) {
+    private void chooseFile(CallbackContext callbackContext, byte[] accept) {
+        this.inputFileName = accept;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
 //        intent.setType("application/vnd.android.package-archive");
 //        if (!accept.equals("*/*")) {
@@ -190,10 +196,10 @@ public class FolderChooser extends CordovaPlugin {
                 try {
                     Uri uri = data.getData();
 
-                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir("").getAbsolutePath(), "file.txt", uri);
+                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(null), this.inputFileName, uri);
                     JSONObject result = new JSONObject();
                     result.put("error", errorCopy);
-                    result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir("").getAbsolutePath());
+                    result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir(null));
                     result.put("uri", uri);
 
                     this.callback.success(result);
