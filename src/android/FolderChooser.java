@@ -85,7 +85,7 @@ public class FolderChooser extends CordovaPlugin {
         return "File";
     }
 
-    public String getNameFromURI(Uri contenturi){
+    private String getNameFromURI(Uri contenturi){
 
         String[] proj = {
                 OpenableColumns.DISPLAY_NAME,
@@ -164,7 +164,7 @@ public class FolderChooser extends CordovaPlugin {
 
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-                    String name = getNameFromURI(uri);
+                    String name = FolderChooser.getDisplayName(contentResolver, uri);
 
                     result.put("name", name);
                     result.put("uri", uri);
