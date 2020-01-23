@@ -198,8 +198,8 @@ public class FolderChooser extends CordovaPlugin {
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
         try {
             JSONObject result = new JSONObject();
-            DocumentFile backupsDir = DocumentFile.fromTreeUri(cordova.getActivity(), uri);
-            File[] files = backupsDir.listFiles();
+            DocumentFile backupsDir = DocumentFile.fromTreeUri(cordova.getActivity(), Uri.parse(uri));
+            DocumentFile[] documents = backupsDir.listFiles();
 //
 //
 //            for (int i = 0; i < files.length; i++)
@@ -207,7 +207,7 @@ public class FolderChooser extends CordovaPlugin {
 //                result.put("file" + files[i], files[i].getName());
 //            }
 
-            result.put("files", files);
+            result.put("files", documents);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to read file: " + err.toString());
