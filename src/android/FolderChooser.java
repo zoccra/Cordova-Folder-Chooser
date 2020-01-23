@@ -198,7 +198,10 @@ public class FolderChooser extends CordovaPlugin {
 
                     String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(null), this.inputFileName, uri);
                     JSONObject result = new JSONObject();
+
+
                     result.put("error", errorCopy);
+                    result.put("exists", DocumentFile.fromTreeUri(cordova.getActivity(), cordova.getActivity().getApplicationContext().getExternalFilesDir(null) + "/" + this.inputFileName + ".zip").exists());
                     result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir(null));
                     result.put("uri", uri);
 
