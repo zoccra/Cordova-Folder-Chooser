@@ -202,7 +202,6 @@ public class FolderChooser extends CordovaPlugin {
                     result.put("name", name);
 //                    result.put("error", errorCopy);
                     result.put("directory 1", cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir);
-                    result.put("directory", cordova.file.dataDirectory);
                     result.put("uri", uri);
 
                     this.callback.success(result);
