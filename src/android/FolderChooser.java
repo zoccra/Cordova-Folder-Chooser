@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import java.net.URI;
 import android.provider.MediaStore;
 import android.util.Base64;
 
