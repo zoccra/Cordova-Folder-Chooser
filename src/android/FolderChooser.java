@@ -131,23 +131,30 @@ public class FolderChooser extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FolderChooser.PICK_FOLDER_REQUEST && this.callback != null) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri uri = data.getData();
+                try {
+                    Uri uri = data.getData();
 
 //                final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 //                this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-                JSONObject result = new JSONObject();
+                    JSONObject result = new JSONObject();
 
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
 //                        result.put("name", name);
-                result.put("uri", uri);
+                    result.put("uri", uri);
 
-                this.callback.success(result);
+                    this.callback.success(result);
+                }
+                catch (Exception err) {
+                    this.callback.error("Failed to read file: " + err.toString());
+                }
+
 
             } else {
                 this.callback.error("Folder URI was null.");
             }
+
         } else if (requestCode == FolderChooser.CREATE_REQUEST_CODE && this.callback != null) {
             if (resultCode == Activity.RESULT_OK) {
 //                Uri uri = data.getData();
