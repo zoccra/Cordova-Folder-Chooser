@@ -161,9 +161,11 @@ public class FolderChooser extends CordovaPlugin {
                     this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
                     JSONObject result = new JSONObject();
-                    getNameFromURI(uri);
+
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
+                    String name = getNameFromURI(uri);
+
                     result.put("name", name);
                     result.put("uri", uri);
 
