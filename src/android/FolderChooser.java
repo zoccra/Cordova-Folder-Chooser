@@ -93,7 +93,7 @@ public class FolderChooser extends CordovaPlugin {
         };
         String name = null;
         int size= 0;
-        Cursor metadataCursor = getContentResolver().query(contenturi,  proj, null, null, null);
+        Cursor metadataCursor = this.cordova.getActivity().getContentResolver().query(contenturi,  proj, null, null, null);
 
         if (metadataCursor != null) {
             try {
@@ -161,10 +161,10 @@ public class FolderChooser extends CordovaPlugin {
                     this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
                     JSONObject result = new JSONObject();
-
+                    getNameFromURI.(uri);
 //                        result.put("data", base64);
 //                        result.put("mediaType", mediaType);
-//                        result.put("name", name);
+                    result.put("name", name);
                     result.put("uri", uri);
 
                     this.callback.success(result);
@@ -208,7 +208,7 @@ public class FolderChooser extends CordovaPlugin {
         return image;
     }
 
-    private String reasTextFromUri(Uri uri) throws IOException {
+    private String readTextFromUri(Uri uri) throws IOException {
         InputStream inputStream = this.cordova.getActivity().getContentResolver().openInputStream(uri);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
