@@ -75,26 +75,6 @@ public class FolderChooser extends CordovaPlugin {
         return os.toByteArray();
     }
 
-    /**
-     * @see https://stackoverflow.com/a/23270545/459881
-     */
-    public static String getDisplayName(ContentResolver contentResolver, Uri uri) {
-        String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
-        Cursor metaCursor = contentResolver.query(uri, projection, null, null, null);
-
-        if (metaCursor != null) {
-            try {
-                if (metaCursor.moveToFirst()) {
-                    return metaCursor.getString(0);
-                }
-            } finally {
-                metaCursor.close();
-            }
-        }
-
-        return "File";
-    }
-
     private static String getFileMimeType(String fileName) {
         String mimeType = null;
         mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
@@ -204,8 +184,9 @@ public class FolderChooser extends CordovaPlugin {
             for (final DocumentFile file: documents) {
                 JSONObject resultFile = new JSONObject();
                 if (file.isFile()) {
-                    resultFile.put("fileName", file.getName());
-                    resultFile.put("isDocumentUri", DocumentsContract.isDocumentUri(cordova.getActivity().getApplicationContext(), file.getUri()));
+                    resultFile.put("isFile", file.isFile());
+                    resultFile.put("name", file.getName());
+                    resultFile.put("url", file.getUri());
                     result.put(file.getName(), resultFile);
                 }
             }
