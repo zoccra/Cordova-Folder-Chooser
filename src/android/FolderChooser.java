@@ -136,15 +136,24 @@ public class FolderChooser extends CordovaPlugin {
                 final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-                getMetaData(uri);
+                try {
+                    getMetaData(uri);
+                } catch (JSONException err) {
+
+                }
+
             } else {
                 this.callback.error("Folder URI was null.");
             }
         } else if (requestCode == FolderChooser.CREATE_REQUEST_CODE && this.callback != null) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri uri = data.getData();
-
-                getMetaData(uri);
+//                Uri uri = data.getData();
+//
+//                try {
+//                    getMetaData(uri);
+//                } catch (JSONException err) {
+//
+//                }
             } else {
                 this.callback.error("File create error.");
             }
