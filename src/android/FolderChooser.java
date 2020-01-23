@@ -190,10 +190,10 @@ public class FolderChooser extends CordovaPlugin {
                 try {
                     Uri uri = data.getData();
 
-                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(), "file", uri);
+                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getExternalFilesDir(""), "file", uri);
                     JSONObject result = new JSONObject();
                     result.put("error", errorCopy);
-                    result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir());
+                    result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir(""));
                     result.put("uri", uri);
 
                     this.callback.success(result);
