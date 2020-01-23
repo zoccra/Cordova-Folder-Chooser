@@ -183,12 +183,10 @@ public class FolderChooser extends CordovaPlugin {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     JSONObject result = new JSONObject();
-                    Uri uri = data.getData();
-
-                    String errorCopy = copyFile(this.inputFileName, uri);
+                    String errorCopy = copyFile(this.inputFileName, data.getData());
 
                     result.put("error", errorCopy);
-                    result.put("uri", uri);
+                    result.put("uri", data.getPath());
 
                     this.callback.success(result);
                 } catch (Exception err) {
