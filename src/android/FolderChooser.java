@@ -192,7 +192,7 @@ public class FolderChooser extends CordovaPlugin {
                     final int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     this.cordova.getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir, "file.txt", uri);
+//                    String errorCopy = copyFile(cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir, "file", uri);
                     JSONObject result = new JSONObject();
 
 //                        result.put("data", base64);
@@ -200,7 +200,9 @@ public class FolderChooser extends CordovaPlugin {
                     String name = FolderChooser.getDisplayName(this.cordova.getActivity().getContentResolver(), uri);
 
                     result.put("name", name);
-                    result.put("error", errorCopy);
+//                    result.put("error", errorCopy);
+                    result.put("directory 1", cordova.getActivity().getApplicationContext().getApplicationInfo().dataDir);
+                    result.put("directory", cordova.file.dataDirectory);
                     result.put("uri", uri);
 
                     this.callback.success(result);
