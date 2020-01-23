@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="com.example.cordova.folderChooser"
-        version="0.0.1">
+<plugin id="com.example.cordova.folderChooser" version="0.0.1"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0">
     <name>FolderChooser</name>
     <description>A plugin to show Folder content</description>
     <license>Apache 2.0</license>
     <keywords>cordova,plugin,Folder</keywords>
     <repo>https://github.com/yokodima/Cordova-Folder-Chooser.git</repo>
     <issue>https://github.com/yokodima/Cordova-Folder-Chooser/issues</issue>
- 
-    <js-module src="www/plugin.js" name="folderChooser">
+
+    <js-module name="folderChooser" src="www/plugin.js">
         <clobbers target="cordova.plugins.folderChooser" />
     </js-module>
-<platform name="android">
-<config-file target="res/xml/config.xml" parent="/*">
-    <feature name="FolderChooser" >
-      <param name="android-package" value="com.example.cordova.folderChooser.FolderChooser"/>
-    </feature>
-  </config-file>
-  <source-file src="src/android/FolderChooser.java" target-dir="src/com/example/cordova/folderChooser"/>
-<config-file target="AndroidManifest.xml" parent="/manifest">
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
-</config-file>
-</platform>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="FolderChooser">
+                <param name="android-package"
+                    value="com.example.cordova.folderChooser.FolderChooser" />
+            </feature>
+        </config-file>
+        <source-file src="src/android/FolderChooser.java"
+            target-dir="src/com/example/cordova/folderChooser" />
+        <config-file parent="/manifest" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
+            <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+        </config-file>
+    </platform>
 </plugin>
