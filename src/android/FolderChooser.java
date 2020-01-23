@@ -201,7 +201,6 @@ public class FolderChooser extends CordovaPlugin {
 
 
                     result.put("error", errorCopy);
-                    result.put("exists", DocumentFile.fromTreeUri(cordova.getActivity(), cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath()).exists());
                     result.put("directory 1", cordova.getActivity().getApplicationContext().getExternalFilesDir(null));
                     result.put("uri", uri);
 
