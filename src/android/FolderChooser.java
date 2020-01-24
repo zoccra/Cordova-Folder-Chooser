@@ -85,7 +85,7 @@ public class FolderChooser extends CordovaPlugin {
         String error = null;
 
         String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
-        File target = new File(target);
+        File target = new File(targetPath);
 
         if (!target.exists()) {
             if (!target.mkdir()) {
