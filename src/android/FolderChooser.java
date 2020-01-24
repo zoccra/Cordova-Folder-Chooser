@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.os.Environment;
 
 import java.io.IOException;
 import java.io.File;
@@ -58,6 +59,7 @@ public class FolderChooser extends CordovaPlugin {
     private Context context = cordova.getActivity().getApplicationContext();
     private ContentResolver contentResolver = cordova.getActivity().getContentResolver();
 
+    private static final String ACTION_OPEN = "open";
     private static final int PICK_FOLDER_REQUEST = 1;
     private static final int CREATE_REQUEST_CODE = 2;
 
