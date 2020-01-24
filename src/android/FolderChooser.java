@@ -13,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import android.app.Activity;
-import android.os.Environment;
 
 import java.io.IOException;
 import java.io.File;
@@ -58,42 +57,23 @@ public class FolderChooser extends CordovaPlugin {
     private CallbackContext callback;
     private Context context = cordova.getActivity().getApplicationContext();
 
-    private static final String ACTION_OPEN = "open";
     private static final int PICK_FOLDER_REQUEST = 1;
     private static final int CREATE_REQUEST_CODE = 2;
-    private static final String TAG = "Chooser";
-
-    public static byte[] getBytesFromInputStream(InputStream is) throws IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        byte[] buffer = new byte[0xFFFF];
-
-        for (int len = is.read(buffer); len != -1; len = is.read(buffer)) {
-            os.write(buffer, 0, len);
-        }
-
-        return os.toByteArray();
-    }
 
     private static String getFileMimeType(String fileName) {
-        String mimeType = null;
-        mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-        return mimeType;
+        reutn "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
     }
 
-
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
-        InputStream in = null;
-        OutputStream out = null;
         String error = null;
 
         try {
             JSONObject result = new JSONObject();
-
             String targetPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
 
             try {
-                in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
-                out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(targetPath));
+                InputStream in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
+                OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(targetPath));
 
                 byte[] buffer = new byte[1024];
                 int read;
@@ -121,16 +101,14 @@ public class FolderChooser extends CordovaPlugin {
 
     private String copyFile(String inputFile, Uri treeUri) {
         String inputPath = context.getExternalFilesDir(null).getAbsolutePath();
-        InputStream in = null;
-        OutputStream out = null;
         String error = null;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
         String mimeType = getFileMimeType(inputFile);
 
         try {
             DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
-            out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
-            in = new FileInputStream(inputPath + "/" + inputFile);
+            OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
+            InputStream in = new FileInputStream(inputPath + "/" + inputFile);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -153,14 +131,6 @@ public class FolderChooser extends CordovaPlugin {
     private void chooseFile(CallbackContext callbackContext, String fileName) {
         this.inputFileName = fileName;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//        intent.setType("application/vnd.android.package-archive");
-//        if (!accept.equals("*/*")) {
-//            intent.putExtra(Intent.EXTRA_MIME_TYPES, accept.split(","));
-//        }
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-//        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-
         Intent chooser = Intent.createChooser(intent, "Open folder");
         cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
 
@@ -198,20 +168,20 @@ public class FolderChooser extends CordovaPlugin {
         }
     }
 
-    private void createFileAction(String mimeType, String fileName) {
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        mimeType = getFileMimeType(fileName);
-        if (mimeType != null) {
-            intent.setType(mimeType);
-        }
-        intent.putExtra(Intent.EXTRA_TITLE, fileName);
-        Intent chooser = Intent.createChooser(intent, "Open document");
-        cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
-    }
+//    private void createFileAction(String mimeType, String fileName) {
+//        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+//        mimeType = getFileMimeType(fileName);
+//        if (mimeType != null) {
+//            intent.setType(mimeType);
+//        }
+//        intent.putExtra(Intent.EXTRA_TITLE, fileName);
+//        Intent chooser = Intent.createChooser(intent, "Open document");
+//        cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
+//    }
 
-    private void deleteFile(Uri uri) throws FileNotFoundException {
-        DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
-    }
+//    private void deleteFile(Uri uri) throws FileNotFoundException {
+//        DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
+//    }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
         try {
