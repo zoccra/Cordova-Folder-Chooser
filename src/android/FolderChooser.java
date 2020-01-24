@@ -79,18 +79,26 @@ public class FolderChooser extends CordovaPlugin {
         return mimeType;
     }
 
-    private String copyFileToAndroidStorage(String sourceFileUri, String fileName) {
+    private String copyFileToAndroidStorage(String sourceFileUri, String fileName) throws IOException {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
-        String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
 
+        String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+        File target = new File(target);
+
+        if (!target.exists()) {
+            if (!target.mkdir()) {
+                return null;
+            }
+        }
+
+        File targetFile = new File(target.getPath() + File.separator + fileName);
+        String mimeType = getFileMimeType(fileName);
 
         try {
-            String mimeType = getFileMimeType(fileName);
-            out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(sourceFileUri));
-            DocumentFile newFile = pickedDir.createFile(mimeType, targetPath + "/" + fileName);
-            in = new FileInputStream(newFile.getUri());
+            in = new FileInputStream(sourceFileUri);
+            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile);
 
             byte[] buffer = new byte[1024];
             int read;
