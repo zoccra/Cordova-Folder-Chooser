@@ -79,7 +79,7 @@ public class FolderChooser extends CordovaPlugin {
         return mimeType;
     }
 
-    private String copyFileToAndroidStorage(Uri sourceFileUri, String fileName) {
+    private String copyFileToAndroidStorage(String sourceFileUri, String fileName) {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
@@ -87,7 +87,7 @@ public class FolderChooser extends CordovaPlugin {
 
 
         try {
-            out = cordova.getActivity().getContentResolver().openOutputStream(sourceFileUri);
+            out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(sourceFileUri));
             in = new FileInputStream(targetPath + "/" + fileName);
 
             byte[] buffer = new byte[1024];
