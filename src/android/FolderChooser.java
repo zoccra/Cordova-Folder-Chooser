@@ -52,6 +52,7 @@ import java.util.ArrayList;
 public class FolderChooser extends CordovaPlugin {
     private static final String ACTION_SAVE_FILE_TO_USB = "saveFileToUSB";
     private static final String ACTION_GET_BACKUPS_FROM_USB = "getBackupsFromUSB";
+    private static final String ACTION_MOVE_BACKUP_FROM_USB = "moveBackupFromUSB";
     private String inputFileName = null;
 
     private CallbackContext callback;
@@ -111,7 +112,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             JSONObject result = new JSONObject();
 
-            String errorCopy = this.copyFileToAndroidStorage(fileUri, fileName);
+            String errorCopy = copyFileToAndroidStorage(fileUri, fileName);
 
             result.put("error", errorCopy);
 
