@@ -56,6 +56,7 @@ public class FolderChooser extends CordovaPlugin {
     private String inputFileName = null;
 
     private CallbackContext callback;
+    private Context context = cordova.getActivity().getApplicationContext();
 
     private static final String ACTION_OPEN = "open";
     private static final int PICK_FOLDER_REQUEST = 1;
@@ -83,23 +84,23 @@ public class FolderChooser extends CordovaPlugin {
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
         try {
             JSONObject result = new JSONObject();
-
-            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
+            String targetPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
             Uri copiedFileUri = DocumentsContract.copyDocument(cordova.getActivity().getContentResolver(), Uri.parse(fileUri), Uri.parse(targetPath));
-
 
             result.put("error", copiedFileUri);
             result.put("fileName", fileName);
             result.put("fileUri", fileUri);
 
             callbackContext.success(result);
+        } catch (FileNotFoundException err) {
+            callbackContext.error("File not found: " + err.toString());
         } catch (Exception err) {
             callbackContext.error("Failed to move file: " + err.toString());
         }
     }
 
     private String copyFile(String inputFile, Uri treeUri) {
-        String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+        String inputPath = context.getExternalFilesDir(null).getAbsolutePath();
         InputStream in = null;
         OutputStream out = null;
         String error = null;
