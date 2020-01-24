@@ -56,13 +56,14 @@ public class FolderChooser extends CordovaPlugin {
 
     private CallbackContext callback;
     private Context context = cordova.getActivity().getApplicationContext();
+    private ContentResolver contentResolver = cordova.getActivity().getContentResolver();
 
     private static final int PICK_FOLDER_REQUEST = 1;
     private static final int CREATE_REQUEST_CODE = 2;
 
     private static String getFileMimeType(String fileName) {
         String mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-        reutn mimeType;
+        return mimeType;
     }
 
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
@@ -73,8 +74,8 @@ public class FolderChooser extends CordovaPlugin {
             String targetPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
 
             try {
-                InputStream in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
-                OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(targetPath));
+                InputStream in = contentResolver.openInputStream(Uri.parse(fileUri));
+                OutputStream out = contentResolver.openOutputStream(Uri.parse(targetPath));
 
                 byte[] buffer = new byte[1024];
                 int read;
@@ -108,7 +109,7 @@ public class FolderChooser extends CordovaPlugin {
 
         try {
             DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
-            OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
+            OutputStream out = contentResolver.openOutputStream(newFile.getUri());
             InputStream in = new FileInputStream(inputPath + "/" + inputFile);
 
             byte[] buffer = new byte[1024];
@@ -181,7 +182,7 @@ public class FolderChooser extends CordovaPlugin {
 //    }
 
 //    private void deleteFile(Uri uri) throws FileNotFoundException {
-//        DocumentsContract.deleteDocument(this.cordova.getActivity().getContentResolver(), uri);
+//        DocumentsContract.deleteDocument(contentResolver, uri);
 //    }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
