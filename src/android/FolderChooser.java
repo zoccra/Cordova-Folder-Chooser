@@ -98,7 +98,7 @@ public class FolderChooser extends CordovaPlugin {
 
         try {
             in = new FileInputStream(sourceFileUri);
-            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile);
+            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile.getUri());
 
             byte[] buffer = new byte[1024];
             int read;
