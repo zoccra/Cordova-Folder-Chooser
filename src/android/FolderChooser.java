@@ -79,7 +79,7 @@ public class FolderChooser extends CordovaPlugin {
         return mimeType;
     }
 
-    private String copyFileToAndroidStorage(String sourceFileUri, String fileName) throws IOException {
+    private String copyFileToAndroidStorage(Uri sourceFileUri, String fileName) throws IOException {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
@@ -118,7 +118,7 @@ public class FolderChooser extends CordovaPlugin {
         return error;
     }
 
-    private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
+    private void moveBackupFromUSB(CallbackContext callbackContext, Uri fileUri, String fileName) {
         try {
             JSONObject result = new JSONObject();
 
