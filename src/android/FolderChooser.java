@@ -89,7 +89,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             String mimeType = getFileMimeType(fileName);
             out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(sourceFileUri));
-            DocumentFile newFile = pickedDir.createFile(mimeType,  + "/" + fileName);
+            DocumentFile newFile = pickedDir.createFile(mimeType, targetPath + "/" + fileName);
             in = new FileInputStream(newFile.getUri());
 
             byte[] buffer = new byte[1024];
