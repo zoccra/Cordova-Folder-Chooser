@@ -115,6 +115,8 @@ public class FolderChooser extends CordovaPlugin {
             String errorCopy = copyFileToAndroidStorage(fileUri, fileName);
 
             result.put("error", errorCopy);
+            result.put("fileName", fileName);
+            result.put("fileUri", fileUri);
 
             callbackContext.success(result);
         } catch (Exception err) {
