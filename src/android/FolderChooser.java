@@ -84,8 +84,13 @@ public class FolderChooser extends CordovaPlugin {
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
         try {
             JSONObject result = new JSONObject();
+
             String targetPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
-            Uri copiedFileUri = DocumentsContract.copyDocument(cordova.getActivity().getContentResolver(), Uri.parse(fileUri), Uri.parse(targetPath));
+            DocumentFile fileTreeUri = DocumentFile.fromTreeUri(cordova.getActivity(), Uri.parse(fileUri));
+            DocumentFile targetFileTreeUri = DocumentFile.fromTreeUri(cordova.getActivity(), Uri.parse(targetPath));
+
+
+            Uri copiedFileUri = DocumentsContract.copyDocument(cordova.getActivity().getContentResolver(), fileTreeUri.getUri(), targetFileTreeUri.getUri());
 
             result.put("error", copiedFileUri);
             result.put("fileName", fileName);
