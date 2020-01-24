@@ -159,7 +159,7 @@ public class FolderChooser extends CordovaPlugin {
         String error = null;
         String mimeType = getFileMimeType(fileName);
 
-        String targetDirPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
+        String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
 
         try {
             JSONObject result = new JSONObject();
@@ -167,7 +167,7 @@ public class FolderChooser extends CordovaPlugin {
 
             try {
                 in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
-                out = cordova.getActivity().getContentResolver().openOutputStream(Uri.fromFile(new File(targetDirPath)));
+                out = cordova.getActivity().getContentResolver().openOutputStream(Uri.fromFile(new File(targetPath)));
 
                 byte[] buffer = new byte[1024];
                 int read;
@@ -187,6 +187,7 @@ public class FolderChooser extends CordovaPlugin {
             result.put("error", error);
             result.put("fileName", fileName);
             result.put("fileUri", fileUri);
+            result.put("url", targetDirPath);
             callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to move file: " + err.toString());
