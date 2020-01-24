@@ -79,7 +79,7 @@ public class FolderChooser extends CordovaPlugin {
         return mimeType;
     }
 
-    private String copyFileToAndroidStorage(Uri sourceFileUri, String fileName, Uri treeUri) {
+    private String copyFileToAndroidStorage(Uri sourceFileUri, String fileName) {
         InputStream in = null;
         OutputStream out = null;
         String error = null;
