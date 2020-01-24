@@ -178,16 +178,16 @@ public class FolderChooser extends CordovaPlugin {
                 out.flush();
                 out.close();
 
-                callbackContext.success(result);
+
             } catch (FileNotFoundException fnfe1) {
                 error = fnfe1.getMessage();
             } catch (Exception e) {
                 error = e.getMessage();
             }
-
             result.put("error", error);
             result.put("fileName", fileName);
             result.put("fileUri", fileUri);
+            callbackContext.success(result);
         } catch (Exception err) {
             callbackContext.error("Failed to move file: " + err.toString());
         }
