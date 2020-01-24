@@ -61,7 +61,8 @@ public class FolderChooser extends CordovaPlugin {
     private static final int CREATE_REQUEST_CODE = 2;
 
     private static String getFileMimeType(String fileName) {
-        reutn "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        String mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        reutn mimeType;
     }
 
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
