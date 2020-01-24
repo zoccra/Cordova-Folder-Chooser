@@ -84,7 +84,7 @@ public class FolderChooser extends CordovaPlugin {
         try {
             JSONObject result = new JSONObject();
 
-            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
             Uri copiedFileUri = DocumentsContract.copyDocument(cordova.getActivity().getContentResolver(), Uri.parse(fileUri), Uri.parse(targetPath));
 
 
