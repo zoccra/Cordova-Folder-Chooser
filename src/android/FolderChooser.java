@@ -111,7 +111,7 @@ public class FolderChooser extends CordovaPlugin {
             }
 
 
-            result.put("error", copiedFileUri);
+            result.put("error", error);
             result.put("fileName", fileName);
             result.put("fileUri", fileUri);
 
