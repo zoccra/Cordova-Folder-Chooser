@@ -56,8 +56,6 @@ public class FolderChooser extends CordovaPlugin {
     private String inputFileName = null;
 
     private CallbackContext callback;
-    private Context context = cordova.getActivity().getApplicationContext();
-    private ContentResolver contentResolver = cordova.getActivity().getContentResolver();
 
     private static final String ACTION_OPEN = "open";
     private static final int PICK_FOLDER_REQUEST = 1;
@@ -73,11 +71,11 @@ public class FolderChooser extends CordovaPlugin {
 
         try {
             JSONObject result = new JSONObject();
-            String targetPath = context.getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
+            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
 
             try {
-                InputStream in = contentResolver.openInputStream(Uri.parse(fileUri));
-                OutputStream out = contentResolver.openOutputStream(Uri.parse(targetPath));
+                InputStream in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
+                OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(targetPath));
 
                 byte[] buffer = new byte[1024];
                 int read;
@@ -104,14 +102,14 @@ public class FolderChooser extends CordovaPlugin {
     }
 
     private String copyFile(String inputFile, Uri treeUri) {
-        String inputPath = context.getExternalFilesDir(null).getAbsolutePath();
+        String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
         String error = null;
         DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
         String mimeType = getFileMimeType(inputFile);
 
         try {
             DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
-            OutputStream out = contentResolver.openOutputStream(newFile.getUri());
+            OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
             InputStream in = new FileInputStream(inputPath + "/" + inputFile);
 
             byte[] buffer = new byte[1024];
@@ -184,7 +182,7 @@ public class FolderChooser extends CordovaPlugin {
 //    }
 
 //    private void deleteFile(Uri uri) throws FileNotFoundException {
-//        DocumentsContract.deleteDocument(contentResolver, uri);
+//        DocumentsContract.deleteDocument(cordova.getActivity().getContentResolver(), uri);
 //    }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
