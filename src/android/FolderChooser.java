@@ -94,11 +94,10 @@ public class FolderChooser extends CordovaPlugin {
         }
 
         File targetFile = new File(target.getPath() + File.separator + fileName);
-        String mimeType = getFileMimeType(fileName);
 
         try {
             in = new FileInputStream(Uri.parse(sourceFileUri));
-            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile.getUri());
+            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile.getPath());
 
             byte[] buffer = new byte[1024];
             int read;
