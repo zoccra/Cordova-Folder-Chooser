@@ -61,9 +61,6 @@ public class FolderChooser extends CordovaPlugin {
     private static final int CREATE_REQUEST_CODE = 2;
     private static final String TAG = "Chooser";
 
-    /**
-     * @see https://stackoverflow.com/a/17861016/459881
-     */
     public static byte[] getBytesFromInputStream(InputStream is) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buffer = new byte[0xFFFF];
@@ -79,6 +76,49 @@ public class FolderChooser extends CordovaPlugin {
         String mimeType = null;
         mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         return mimeType;
+    }
+
+    private String copyFileToAndroidStorage(Uri sourceFileUri, String fileName, Uri treeUri) {
+        InputStream in = null;
+        OutputStream out = null;
+        String error = null;
+        String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+
+
+        try {
+            out = cordova.getActivity().getContentResolver().openOutputStream(sourceFileUri);
+            in = new FileInputStream(targetPath + "/" + fileName);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+
+        } catch (FileNotFoundException fnfe1) {
+            error = fnfe1.getMessage();
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        return error;
+    }
+
+    private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
+        try {
+            JSONObject result = new JSONObject();
+
+            String errorCopy = this.copyFileToAndroidStorage(fileUri, fileName);
+
+            result.put("error", errorCopy);
+
+            callbackContext.success(result);
+        } catch (Exception err) {
+            callbackContext.error("Failed to move file: " + err.toString());
+        }
     }
 
     private String copyFile(String inputFile, Uri treeUri) {
@@ -187,6 +227,7 @@ public class FolderChooser extends CordovaPlugin {
                     resultFile.put("isFile", file.isFile());
                     resultFile.put("name", file.getName());
                     resultFile.put("url", file.getUri());
+                    resultFile.put("type", file.getType());
                     result.put(file.getName(), resultFile);
                 }
             }
@@ -209,6 +250,9 @@ public class FolderChooser extends CordovaPlugin {
                 return true;
             } else if (action.equals(FolderChooser.ACTION_GET_BACKUPS_FROM_USB)) {
                 this.getBackupsListByUri(callbackContext, args.getString(0));
+                return true;
+            } else if (action.equals(FolderChooser.ACTION_MOVE_BACKUP_FROM_USB)) {
+                this.moveBackupFromUSB(callbackContext, args.getString(0), args.getString(1));
                 return true;
             }
         } catch (JSONException err) {
