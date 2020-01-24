@@ -61,85 +61,28 @@ public class FolderChooser extends CordovaPlugin {
     private static final int PICK_FOLDER_REQUEST = 1;
     private static final int CREATE_REQUEST_CODE = 2;
 
-    private static String getFileMimeType(String fileName) {
-        String mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-        return mimeType;
-    }
-
-    private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
-        String error = null;
-
+    @Override
+    public boolean execute(
+            String action,
+            JSONArray args,
+            CallbackContext callbackContext
+    ) {
         try {
-            JSONObject result = new JSONObject();
-            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
-
-            try {
-                InputStream in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
-                OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(Uri.parse(targetPath));
-
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-
-                callbackContext.success(result);
-            } catch (FileNotFoundException fnfe1) {
-                error = fnfe1.getMessage();
-            } catch (Exception e) {
-                error = e.getMessage();
+            if (action.equals(FolderChooser.ACTION_SAVE_FILE_TO_USB)) {
+                this.chooseFile(callbackContext, args.getString(0));
+                return true;
+            } else if (action.equals(FolderChooser.ACTION_GET_BACKUPS_FROM_USB)) {
+                this.getBackupsListByUri(callbackContext, args.getString(0));
+                return true;
+            } else if (action.equals(FolderChooser.ACTION_MOVE_BACKUP_FROM_USB)) {
+                this.moveBackupFromUSB(callbackContext, args.getString(0), args.getString(1));
+                return true;
             }
-
-            result.put("error", error);
-            result.put("fileName", fileName);
-            result.put("fileUri", fileUri);
-        } catch (Exception err) {
-            callbackContext.error("Failed to move file: " + err.toString());
-        }
-    }
-
-    private String copyFile(String inputFile, Uri treeUri) {
-        String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
-        String error = null;
-        DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
-        String mimeType = getFileMimeType(inputFile);
-
-        try {
-            DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
-            OutputStream out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
-            InputStream in = new FileInputStream(inputPath + "/" + inputFile);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
-
-        } catch (FileNotFoundException fnfe1) {
-            error = fnfe1.getMessage();
-        } catch (Exception e) {
-            error = e.getMessage();
+        } catch (JSONException err) {
+            this.callback.error("Execute failed: " + err.toString());
         }
 
-        return error;
-    }
-
-    private void chooseFile(CallbackContext callbackContext, String fileName) {
-        this.inputFileName = fileName;
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        Intent chooser = Intent.createChooser(intent, "Open folder");
-        cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
-
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-        pluginResult.setKeepCallback(true);
-        this.callback = callbackContext;
-        callbackContext.sendPluginResult(pluginResult);
+        return false;
     }
 
     @Override
@@ -170,20 +113,17 @@ public class FolderChooser extends CordovaPlugin {
         }
     }
 
-//    private void createFileAction(String mimeType, String fileName) {
-//        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//        mimeType = getFileMimeType(fileName);
-//        if (mimeType != null) {
-//            intent.setType(mimeType);
-//        }
-//        intent.putExtra(Intent.EXTRA_TITLE, fileName);
-//        Intent chooser = Intent.createChooser(intent, "Open document");
-//        cordova.startActivityForResult(this, chooser, FolderChooser.CREATE_REQUEST_CODE);
-//    }
+    private void chooseFile(CallbackContext callbackContext, String fileName) {
+        this.inputFileName = fileName;
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        Intent chooser = Intent.createChooser(intent, "Open folder");
+        cordova.startActivityForResult(this, chooser, FolderChooser.PICK_FOLDER_REQUEST);
 
-//    private void deleteFile(Uri uri) throws FileNotFoundException {
-//        DocumentsContract.deleteDocument(cordova.getActivity().getContentResolver(), uri);
-//    }
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+        pluginResult.setKeepCallback(true);
+        this.callback = callbackContext;
+        callbackContext.sendPluginResult(pluginResult);
+    }
 
     private void getBackupsListByUri(CallbackContext callbackContext, String uri) {
         try {
@@ -208,27 +148,79 @@ public class FolderChooser extends CordovaPlugin {
         }
     }
 
-    @Override
-    public boolean execute(
-            String action,
-            JSONArray args,
-            CallbackContext callbackContext
-    ) {
+    private static String getFileMimeType(String fileName) {
+        String mimeType = "application/" + fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        return mimeType;
+    }
+
+    private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
+        InputStream in = null;
+        OutputStream out = null;
+        String error = null;
+        String mimeType = getFileMimeType(fileName);
+
+        String targetDirPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
+
         try {
-            if (action.equals(FolderChooser.ACTION_SAVE_FILE_TO_USB)) {
-                this.chooseFile(callbackContext, args.getString(0));
-                return true;
-            } else if (action.equals(FolderChooser.ACTION_GET_BACKUPS_FROM_USB)) {
-                this.getBackupsListByUri(callbackContext, args.getString(0));
-                return true;
-            } else if (action.equals(FolderChooser.ACTION_MOVE_BACKUP_FROM_USB)) {
-                this.moveBackupFromUSB(callbackContext, args.getString(0), args.getString(1));
-                return true;
+            JSONObject result = new JSONObject();
+
+
+            try {
+                in = cordova.getActivity().getContentResolver().openInputStream(Uri.parse(fileUri));
+                out = cordova.getActivity().getContentResolver().openOutputStream(Uri.fromFile(new File(targetDirPath)));
+
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+                in.close();
+                out.flush();
+                out.close();
+
+                callbackContext.success(result);
+            } catch (FileNotFoundException fnfe1) {
+                error = fnfe1.getMessage();
+            } catch (Exception e) {
+                error = e.getMessage();
             }
-        } catch (JSONException err) {
-            this.callback.error("Execute failed: " + err.toString());
+
+            result.put("error", error);
+            result.put("fileName", fileName);
+            result.put("fileUri", fileUri);
+        } catch (Exception err) {
+            callbackContext.error("Failed to move file: " + err.toString());
+        }
+    }
+
+    private String copyFile(String inputFile, Uri treeUri) {
+        String inputPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+        InputStream in = null;
+        OutputStream out = null;
+        String error = null;
+        DocumentFile pickedDir = DocumentFile.fromTreeUri(cordova.getActivity(), treeUri);
+        String mimeType = getFileMimeType(inputFile);
+
+        try {
+            DocumentFile newFile = pickedDir.createFile(mimeType, inputFile);
+            out = cordova.getActivity().getContentResolver().openOutputStream(newFile.getUri());
+            in = new FileInputStream(inputPath + "/" + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+
+        } catch (FileNotFoundException fnfe1) {
+            error = fnfe1.getMessage();
+        } catch (Exception e) {
+            error = e.getMessage();
         }
 
-        return false;
+        return error;
     }
 }
