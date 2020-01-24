@@ -79,51 +79,16 @@ public class FolderChooser extends CordovaPlugin {
         return mimeType;
     }
 
-    private String copyFileToAndroidStorage(String sourceFileUri, String fileName) throws IOException {
-        InputStream in = null;
-        OutputStream out = null;
-        String error = null;
-
-        String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
-        File target = new File(targetPath);
-
-        if (!target.exists()) {
-            if (!target.mkdir()) {
-                return null;
-            }
-        }
-
-        File targetFile = new File(target.getPath() + File.separator + fileName);
-
-        try {
-            in = new FileInputStream(Uri.parse(sourceFileUri));
-            out = cordova.getActivity().getContentResolver().openOutputStream(targetFile.getPath());
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
-
-        } catch (FileNotFoundException fnfe1) {
-            error = fnfe1.getMessage();
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-
-        return error;
-    }
 
     private void moveBackupFromUSB(CallbackContext callbackContext, String fileUri, String fileName) {
         try {
             JSONObject result = new JSONObject();
 
-            String errorCopy = copyFileToAndroidStorage(fileUri, fileName);
+            String targetPath = cordova.getActivity().getApplicationContext().getExternalFilesDir(null).getAbsolutePath() + "/" + fileName;
+            Uri copiedFileUri = DocumentsContract.copyDocument(cordova.getActivity().getContentResolver(), fileUri, targetPath);
 
-            result.put("error", errorCopy);
+
+            result.put("error", copiedFileUri);
             result.put("fileName", fileName);
             result.put("fileUri", fileUri);
 
